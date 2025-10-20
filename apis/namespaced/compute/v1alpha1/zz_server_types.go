@@ -431,7 +431,7 @@ type ServerStatus struct {
 // +kubebuilder:subresource:status
 // +kubebuilder:storageversion
 
-// Server is the Schema for the Servers API. Provides a cloudscale.ch server resource.
+// Server is the Schema for the Servers API. "cloudscale.ch resource"page_title: "cloudscale.ch: cloudscale_server"
 // +kubebuilder:printcolumn:name="SYNCED",type="string",JSONPath=".status.conditions[?(@.type=='Synced')].status"
 // +kubebuilder:printcolumn:name="READY",type="string",JSONPath=".status.conditions[?(@.type=='Ready')].status"
 // +kubebuilder:printcolumn:name="EXTERNAL-NAME",type="string",JSONPath=".metadata.annotations.crossplane\\.io/external-name"

@@ -2,7 +2,7 @@ name: cloudscale-ch/cloudscale
 resources:
     cloudscale_custom_image:
         subCategory: ""
-        description: Provides a cloudscale.ch custom image resource.
+        description: '"cloudscale.ch resource"page_title: "cloudscale.ch: cloudscale_custom_image"'
         name: cloudscale_custom_image
         title: cloudscale_custom_image
         examples:
@@ -60,7 +60,7 @@ resources:
         importStatements: []
     cloudscale_floating_ip:
         subCategory: ""
-        description: Provides a cloudscale.ch Floating IP resource.
+        description: '"cloudscale.ch resource"page_title: "cloudscale.ch: cloudscale_floating_ip"'
         name: cloudscale_floating_ip
         title: cloudscale_floating_ip
         examples:
@@ -123,7 +123,7 @@ resources:
         importStatements: []
     cloudscale_load_balancer:
         subCategory: ""
-        description: Provides a cloudscale.ch load balancer resource.
+        description: '"cloudscale.ch resource"page_title: "cloudscale.ch: cloudscale_load_balancer"'
         name: cloudscale_load_balancer
         title: cloudscale_load_balancer
         examples:
@@ -159,7 +159,7 @@ resources:
         importStatements: []
     cloudscale_load_balancer_health_monitor:
         subCategory: ""
-        description: Provides a cloudscale.ch load balancer health monitor resource.
+        description: '"cloudscale.ch resource"page_title: "cloudscale.ch: cloudscale_load_balancer_health_monitor"'
         name: cloudscale_load_balancer_health_monitor
         title: cloudscale_load_balancer_health_monitor
         examples:
@@ -195,7 +195,7 @@ resources:
         importStatements: []
     cloudscale_load_balancer_listener:
         subCategory: ""
-        description: Provides a cloudscale.ch load balancer listener resource.
+        description: '"cloudscale.ch resource"page_title: "cloudscale.ch: cloudscale_load_balancer_listener"'
         name: cloudscale_load_balancer_listener
         title: cloudscale_load_balancer_listener
         examples:
@@ -246,7 +246,7 @@ resources:
         importStatements: []
     cloudscale_load_balancer_pool:
         subCategory: ""
-        description: Provides a cloudscale.ch load balancer pool resource.
+        description: '"cloudscale.ch resource"page_title: "cloudscale.ch: cloudscale_load_balancer_pool"'
         name: cloudscale_load_balancer_pool
         title: cloudscale_load_balancer_pool
         examples:
@@ -286,21 +286,22 @@ resources:
         importStatements: []
     cloudscale_load_balancer_pool_member:
         subCategory: ""
-        description: Provides a cloudscale.ch load balancer pool member resource.
+        description: '"cloudscale.ch resource"page_title: "cloudscale.ch: cloudscale_load_balancer_pool_member"'
         name: cloudscale_load_balancer_pool_member
         title: cloudscale_load_balancer_pool_member
         examples:
             - name: lb1-pool-member
               manifest: |-
                 {
-                  "address": "${cloudscale_server.web-worker.interfaces[1].addresses[0].address}",
-                  "name": "web-lb1-pool-member",
+                  "address": "${cloudscale_server.web-worker.interfaces[0].addresses[0].address}",
+                  "count": 2,
+                  "name": "web-lb1-pool-member-",
                   "pool_uuid": "${cloudscale_load_balancer_pool.lb1-pool.id}",
                   "protocol_port": 80,
                   "subnet_uuid": "${cloudscale_subnet.backend-subnet.id}"
                 }
               references:
-                address: cloudscale_server.web-worker.interfaces[1].addresses[0].address
+                address: cloudscale_server.web-worker.interfaces[0].addresses[0].address
                 pool_uuid: cloudscale_load_balancer_pool.lb1-pool.id
                 subnet_uuid: cloudscale_subnet.backend-subnet.id
               dependencies:
@@ -325,6 +326,7 @@ resources:
                     }
                 cloudscale_server.web-worker: |-
                     {
+                      "count": 2,
                       "flavor_slug": "flex-4-2",
                       "image_slug": "ubuntu-22.04",
                       "interfaces": [
@@ -376,7 +378,7 @@ resources:
         importStatements: []
     cloudscale_network:
         subCategory: ""
-        description: Provides a cloudscale.ch private network resource.
+        description: '"cloudscale.ch resource"page_title: "cloudscale.ch: cloudscale_network"'
         name: cloudscale_network
         title: cloudscale_network
         examples:
@@ -427,7 +429,7 @@ resources:
         importStatements: []
     cloudscale_objects_user:
         subCategory: ""
-        description: Provides a cloudscale.ch Objects User for the S3-compatible object storage.
+        description: '"cloudscale.ch resource"page_title: "cloudscale.ch: cloudscale_objects_user"'
         name: cloudscale_objects_user
         title: cloudscale_objects_user
         examples:
@@ -453,7 +455,7 @@ resources:
         importStatements: []
     cloudscale_server:
         subCategory: ""
-        description: Provides a cloudscale.ch server resource.
+        description: '"cloudscale.ch resource"page_title: "cloudscale.ch: cloudscale_server"'
         name: cloudscale_server
         title: cloudscale_server
         examples:
@@ -532,7 +534,7 @@ resources:
         importStatements: []
     cloudscale_server_group:
         subCategory: ""
-        description: Provides a cloudscale.ch server group resource.
+        description: '"cloudscale.ch resource"page_title: "cloudscale.ch: cloudscale_server_group"'
         name: cloudscale_server_group
         title: cloudscale_server_group
         examples:
@@ -571,7 +573,7 @@ resources:
         importStatements: []
     cloudscale_subnet:
         subCategory: ""
-        description: Provides a cloudscale.ch subnet resource.
+        description: '"cloudscale.ch resource"page_title: "cloudscale.ch: cloudscale_subnet"'
         name: cloudscale_subnet
         title: cloudscale_subnet
         examples:
@@ -642,7 +644,7 @@ resources:
         importStatements: []
     cloudscale_volume:
         subCategory: ""
-        description: Provides a cloudscale.ch volume (block storage) resource.
+        description: '"cloudscale.ch resource"page_title: "cloudscale.ch: cloudscale_volume"'
         name: cloudscale_volume
         title: cloudscale_volume
         examples:

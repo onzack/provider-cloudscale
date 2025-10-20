@@ -34,8 +34,8 @@ spec:
     name: v1alpha1
     schema:
       openAPIV3Schema:
-        description: ObjectsUser is the Schema for the ObjectsUsers API. Provides
-          a cloudscale.ch Objects User for the S3-compatible object storage.
+        description: 'ObjectsUser is the Schema for the ObjectsUsers API. "cloudscale.ch
+          resource"page_title: "cloudscale.ch: cloudscale_objects_user"'
         properties:
           apiVersion:
             description: |-

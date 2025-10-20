@@ -34,8 +34,8 @@ spec:
     name: v1alpha1
     schema:
       openAPIV3Schema:
-        description: Network is the Schema for the Networks API. Provides a cloudscale.ch
-          private network resource.
+        description: 'Network is the Schema for the Networks API. "cloudscale.ch resource"page_title:
+          "cloudscale.ch: cloudscale_network"'
         properties:
           apiVersion:
             description: |-

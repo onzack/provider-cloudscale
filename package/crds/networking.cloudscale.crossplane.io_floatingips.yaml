@@ -34,8 +34,8 @@ spec:
     name: v1alpha1
     schema:
       openAPIV3Schema:
-        description: FloatingIP is the Schema for the FloatingIPs API. Provides a
-          cloudscale.ch Floating IP resource.
+        description: 'FloatingIP is the Schema for the FloatingIPs API. "cloudscale.ch
+          resource"page_title: "cloudscale.ch: cloudscale_floating_ip"'
         properties:
           apiVersion:
             description: |-

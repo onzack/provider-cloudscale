@@ -34,8 +34,8 @@ spec:
     name: v1alpha1
     schema:
       openAPIV3Schema:
-        description: LoadBalancerListener is the Schema for the LoadBalancerListeners
-          API. Provides a cloudscale.ch load balancer listener resource.
+        description: 'LoadBalancerListener is the Schema for the LoadBalancerListeners
+          API. "cloudscale.ch resource"page_title: "cloudscale.ch: cloudscale_load_balancer_listener"'
         properties:
           apiVersion:
             description: |-

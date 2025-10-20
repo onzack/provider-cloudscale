@@ -168,7 +168,7 @@ type LoadBalancerPoolMemberStatus struct {
 // +kubebuilder:subresource:status
 // +kubebuilder:storageversion
 
-// LoadBalancerPoolMember is the Schema for the LoadBalancerPoolMembers API. Provides a cloudscale.ch load balancer pool member resource.
+// LoadBalancerPoolMember is the Schema for the LoadBalancerPoolMembers API. "cloudscale.ch resource"page_title: "cloudscale.ch: cloudscale_load_balancer_pool_member"
 // +kubebuilder:printcolumn:name="SYNCED",type="string",JSONPath=".status.conditions[?(@.type=='Synced')].status"
 // +kubebuilder:printcolumn:name="READY",type="string",JSONPath=".status.conditions[?(@.type=='Ready')].status"
 // +kubebuilder:printcolumn:name="EXTERNAL-NAME",type="string",JSONPath=".metadata.annotations.crossplane\\.io/external-name"

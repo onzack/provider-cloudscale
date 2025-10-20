@@ -34,8 +34,8 @@ spec:
     name: v1alpha1
     schema:
       openAPIV3Schema:
-        description: CustomImage is the Schema for the CustomImages API. Provides
-          a cloudscale.ch custom image resource.
+        description: 'CustomImage is the Schema for the CustomImages API. "cloudscale.ch
+          resource"page_title: "cloudscale.ch: cloudscale_custom_image"'
         properties:
           apiVersion:
             description: |-

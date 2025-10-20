@@ -8,8 +8,9 @@ metadata:
   name: lb1-pool-member
 spec:
   forProvider:
-    address: ${cloudscale_server.web-worker.interfaces[1].addresses[0].address}
-    name: web-lb1-pool-member
+    address: ${cloudscale_server.web-worker.interfaces[0].addresses[0].address}
+    count: 2
+    name: web-lb1-pool-member-
     poolUuid: ${cloudscale_load_balancer_pool.lb1-pool.id}
     protocolPort: 80
     subnetUuid: ${cloudscale_subnet.backend-subnet.id}
@@ -75,6 +76,7 @@ metadata:
   name: web-worker
 spec:
   forProvider:
+    count: 2
     flavorSlug: flex-4-2
     imageSlug: ubuntu-22.04
     interfaces:

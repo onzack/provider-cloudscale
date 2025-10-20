@@ -34,8 +34,8 @@ spec:
     name: v1alpha1
     schema:
       openAPIV3Schema:
-        description: ServerGroup is the Schema for the ServerGroups API. Provides
-          a cloudscale.ch server group resource.
+        description: 'ServerGroup is the Schema for the ServerGroups API. "cloudscale.ch
+          resource"page_title: "cloudscale.ch: cloudscale_server_group"'
         properties:
           apiVersion:
             description: |-

@@ -34,8 +34,8 @@ spec:
     name: v1alpha1
     schema:
       openAPIV3Schema:
-        description: LoadBalancerPool is the Schema for the LoadBalancerPools API.
-          Provides a cloudscale.ch load balancer pool resource.
+        description: 'LoadBalancerPool is the Schema for the LoadBalancerPools API.
+          "cloudscale.ch resource"page_title: "cloudscale.ch: cloudscale_load_balancer_pool"'
         properties:
           apiVersion:
             description: |-

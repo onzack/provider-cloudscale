@@ -113,7 +113,7 @@ type ServerGroupStatus struct {
 // +kubebuilder:subresource:status
 // +kubebuilder:storageversion
 
-// ServerGroup is the Schema for the ServerGroups API. Provides a cloudscale.ch server group resource.
+// ServerGroup is the Schema for the ServerGroups API. "cloudscale.ch resource"page_title: "cloudscale.ch: cloudscale_server_group"
 // +kubebuilder:printcolumn:name="SYNCED",type="string",JSONPath=".status.conditions[?(@.type=='Synced')].status"
 // +kubebuilder:printcolumn:name="READY",type="string",JSONPath=".status.conditions[?(@.type=='Ready')].status"
 // +kubebuilder:printcolumn:name="EXTERNAL-NAME",type="string",JSONPath=".metadata.annotations.crossplane\\.io/external-name"

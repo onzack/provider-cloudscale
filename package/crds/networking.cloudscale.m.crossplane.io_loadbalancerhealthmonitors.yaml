@@ -34,8 +34,8 @@ spec:
     name: v1alpha1
     schema:
       openAPIV3Schema:
-        description: LoadBalancerHealthMonitor is the Schema for the LoadBalancerHealthMonitors
-          API. Provides a cloudscale.ch load balancer health monitor resource.
+        description: 'LoadBalancerHealthMonitor is the Schema for the LoadBalancerHealthMonitors
+          API. "cloudscale.ch resource"page_title: "cloudscale.ch: cloudscale_load_balancer_health_monitor"'
         properties:
           apiVersion:
             description: |-
