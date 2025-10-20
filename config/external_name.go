@@ -7,8 +7,19 @@ import (
 // ExternalNameConfigs contains all external name configurations for this
 // provider.
 var ExternalNameConfigs = map[string]config.ExternalName{
-	// Import requires using a randomly generated ID from provider: nl-2e21sda
-	"null_resource": idWithStub(),
+	"cloudscale_custom_image":                 config.IdentifierFromProvider,
+	"cloudscale_floating_ip":                  config.IdentifierFromProvider,
+	"cloudscale_load_balancer":                config.IdentifierFromProvider,
+	"cloudscale_load_balancer_health_monitor": config.IdentifierFromProvider,
+	"cloudscale_load_balancer_listener":       config.IdentifierFromProvider,
+	"cloudscale_load_balancer_pool":           config.IdentifierFromProvider,
+	"cloudscale_load_balancer_pool_member":    config.IdentifierFromProvider,
+	"cloudscale_network":                      config.IdentifierFromProvider,
+	"cloudscale_objects_user":                 config.IdentifierFromProvider,
+	"cloudscale_server":                       config.IdentifierFromProvider,
+	"cloudscale_server_group":                 config.IdentifierFromProvider,
+	"cloudscale_subnet":                       config.IdentifierFromProvider,
+	"cloudscale_volume":                       config.IdentifierFromProvider,
 }
 
 func idWithStub() config.ExternalName {

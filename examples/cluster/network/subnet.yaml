@@ -1,0 +1,9 @@
+apiVersion: networking.cloudscale.crossplane.io/v1alpha1
+kind: Subnet
+metadata:
+  name: subnet-test-michi
+spec:
+  forProvider:
+    cidr: 10.0.0.0/24
+    gatewayAddress: 10.0.0.1
+    networkUuid: 60163c01-7029-40a8-ad95-d655b677d054

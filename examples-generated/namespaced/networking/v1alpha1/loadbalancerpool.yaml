@@ -1,0 +1,32 @@
+apiVersion: networking.cloudscale.m.crossplane.io/v1alpha1
+kind: LoadBalancerPool
+metadata:
+  annotations:
+    meta.upbound.io/example-id: networking/v1alpha1/loadbalancerpool
+  labels:
+    testing.upbound.io/example-name: lb1-pool
+  name: lb1-pool
+  namespace: crossplane-system
+spec:
+  forProvider:
+    algorithm: round_robin
+    loadBalancerUuid: ${cloudscale_load_balancer.lb1.id}
+    name: web-lb1-pool
+    protocol: tcp
+
+---
+
+apiVersion: networking.cloudscale.m.crossplane.io/v1alpha1
+kind: LoadBalancer
+metadata:
+  annotations:
+    meta.upbound.io/example-id: networking/v1alpha1/loadbalancerpool
+  labels:
+    testing.upbound.io/example-name: lb1
+  name: lb1
+  namespace: crossplane-system
+spec:
+  forProvider:
+    flavorSlug: lb-standard
+    name: web-lb1
+    zoneSlug: lpg1

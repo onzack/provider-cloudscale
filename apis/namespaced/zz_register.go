@@ -10,15 +10,21 @@ package namespaced
 import (
 	"k8s.io/apimachinery/pkg/runtime"
 
-	v1alpha1 "github.com/crossplane/upjet-provider-template/apis/namespaced/null/v1alpha1"
-	v1alpha1namespaced "github.com/crossplane/upjet-provider-template/apis/namespaced/v1alpha1"
-	v1beta1 "github.com/crossplane/upjet-provider-template/apis/namespaced/v1beta1"
+	v1alpha1 "github.com/onzack/provider-cloudscale/apis/namespaced/compute/v1alpha1"
+	v1alpha1networking "github.com/onzack/provider-cloudscale/apis/namespaced/networking/v1alpha1"
+	v1alpha1objects "github.com/onzack/provider-cloudscale/apis/namespaced/objects/v1alpha1"
+	v1alpha1storage "github.com/onzack/provider-cloudscale/apis/namespaced/storage/v1alpha1"
+	v1alpha1namespaced "github.com/onzack/provider-cloudscale/apis/namespaced/v1alpha1"
+	v1beta1 "github.com/onzack/provider-cloudscale/apis/namespaced/v1beta1"
 )
 
 func init() {
 	// Register the types with the Scheme so the components can map objects to GroupVersionKinds and back
 	AddToSchemes = append(AddToSchemes,
 		v1alpha1.SchemeBuilder.AddToScheme,
+		v1alpha1networking.SchemeBuilder.AddToScheme,
+		v1alpha1objects.SchemeBuilder.AddToScheme,
+		v1alpha1storage.SchemeBuilder.AddToScheme,
 		v1alpha1namespaced.SchemeBuilder.AddToScheme,
 		v1beta1.SchemeBuilder.AddToScheme,
 	)

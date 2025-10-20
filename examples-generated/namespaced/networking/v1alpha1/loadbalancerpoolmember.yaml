@@ -1,0 +1,110 @@
+apiVersion: networking.cloudscale.m.crossplane.io/v1alpha1
+kind: LoadBalancerPoolMember
+metadata:
+  annotations:
+    meta.upbound.io/example-id: networking/v1alpha1/loadbalancerpoolmember
+  labels:
+    testing.upbound.io/example-name: lb1-pool-member
+  name: lb1-pool-member
+  namespace: crossplane-system
+spec:
+  forProvider:
+    address: ${cloudscale_server.web-worker.interfaces[1].addresses[0].address}
+    name: web-lb1-pool-member
+    poolUuid: ${cloudscale_load_balancer_pool.lb1-pool.id}
+    protocolPort: 80
+    subnetUuid: ${cloudscale_subnet.backend-subnet.id}
+
+---
+
+apiVersion: networking.cloudscale.m.crossplane.io/v1alpha1
+kind: LoadBalancer
+metadata:
+  annotations:
+    meta.upbound.io/example-id: networking/v1alpha1/loadbalancerpoolmember
+  labels:
+    testing.upbound.io/example-name: lb1
+  name: lb1
+  namespace: crossplane-system
+spec:
+  forProvider:
+    flavorSlug: lb-standard
+    name: web-lb1
+    zoneSlug: lpg1
+
+---
+
+apiVersion: networking.cloudscale.m.crossplane.io/v1alpha1
+kind: LoadBalancerPool
+metadata:
+  annotations:
+    meta.upbound.io/example-id: networking/v1alpha1/loadbalancerpoolmember
+  labels:
+    testing.upbound.io/example-name: lb1-pool
+  name: lb1-pool
+  namespace: crossplane-system
+spec:
+  forProvider:
+    algorithm: round_robin
+    loadBalancerUuid: ${cloudscale_load_balancer.lb1.id}
+    name: web-lb1-pool
+    protocol: tcp
+
+---
+
+apiVersion: networking.cloudscale.m.crossplane.io/v1alpha1
+kind: Network
+metadata:
+  annotations:
+    meta.upbound.io/example-id: networking/v1alpha1/loadbalancerpoolmember
+  labels:
+    testing.upbound.io/example-name: backend
+  name: backend
+  namespace: crossplane-system
+spec:
+  forProvider:
+    autoCreateIpv4Subnet: "false"
+    name: backend
+    zoneSlug: lpg1
+
+---
+
+apiVersion: compute.cloudscale.m.crossplane.io/v1alpha1
+kind: Server
+metadata:
+  annotations:
+    meta.upbound.io/example-id: networking/v1alpha1/loadbalancerpoolmember
+  labels:
+    testing.upbound.io/example-name: web-worker
+  name: web-worker
+  namespace: crossplane-system
+spec:
+  forProvider:
+    flavorSlug: flex-4-2
+    imageSlug: ubuntu-22.04
+    interfaces:
+    - type: public
+    - addresses:
+      - subnetUuid: ${cloudscale_subnet.backend-subnet.id}
+      type: private
+    name: web-worker
+    sshKeys:
+    - ssh-ed25519 AAAAC3NzaC1lZDI1NTE5AAAAIL2jzgla23DfRVLQr3KT20QQYovqCCN3clHrjm2ZuQFW
+      user@example.com
+    zoneSlug: lpg1
+
+---
+
+apiVersion: networking.cloudscale.m.crossplane.io/v1alpha1
+kind: Subnet
+metadata:
+  annotations:
+    meta.upbound.io/example-id: networking/v1alpha1/loadbalancerpoolmember
+  labels:
+    testing.upbound.io/example-name: backend-subnet
+  name: backend-subnet
+  namespace: crossplane-system
+spec:
+  forProvider:
+    cidr: 10.11.12.0/24
+    networkUuid: ${cloudscale_network.backend.id}
