@@ -10,6 +10,7 @@ require (
 	github.com/crossplane/upjet-provider-template v0.0.0-20251010091616-182743528405
 	github.com/crossplane/upjet/v2 v2.1.0-rc.0
 	github.com/pkg/errors v0.9.1
+	golang.org/x/tools v0.38.0
 	google.golang.org/grpc v1.76.0
 	k8s.io/api v0.34.1
 	k8s.io/apiextensions-apiserver v0.34.1
@@ -122,10 +123,10 @@ require (
 	golang.org/x/oauth2 v0.32.0 // indirect
 	golang.org/x/sync v0.17.0 // indirect
 	golang.org/x/sys v0.37.0 // indirect
+	golang.org/x/telemetry v0.0.0-20251008203120-078029d740a8 // indirect
 	golang.org/x/term v0.36.0 // indirect
 	golang.org/x/text v0.30.0 // indirect
 	golang.org/x/time v0.14.0 // indirect
-	golang.org/x/tools v0.38.0 // indirect
 	golang.org/x/tools/go/expect v0.1.1-deprecated // indirect
 	gomodules.xyz/jsonpatch/v2 v2.5.0 // indirect
 	google.golang.org/appengine v1.6.8 // indirect
