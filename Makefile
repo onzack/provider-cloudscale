@@ -137,7 +137,21 @@ pull-docs:
 	fi
 	@git -C "$(WORK_DIR)/$(TERRAFORM_PROVIDER_SOURCE)" sparse-checkout set "$(TERRAFORM_DOCS_PATH)"
 
-generate.init: $(TERRAFORM_PROVIDER_SCHEMA) pull-docs
+patch-docs: pull-docs
+	@$(INFO) patching provider documentation for scraper compatibility
+	@for file in $(WORK_DIR)/$(TERRAFORM_PROVIDER_SOURCE)/$(TERRAFORM_DOCS_PATH)/*.md; do \
+		if [ -f "$$file" ] && ! grep -q "^description:" "$$file" 2>/dev/null; then \
+			awk 'NR==1{print; print "description: \"cloudscale.ch resource\""; next}1' "$$file" > "$$file.tmp" && mv "$$file.tmp" "$$file"; \
+		fi; \
+	done
+	@if [ -f "$(WORK_DIR)/$(TERRAFORM_PROVIDER_SOURCE)/$(TERRAFORM_DOCS_PATH)/load_balancer_pool_member.md" ]; then \
+		sed 's/cloudscale_server.web-worker\[count.index\].interfaces\[1\].addresses\[0\].address/cloudscale_server.web-worker.interfaces[0].addresses[0].address/g; /count = 2/d; s/$${count.index}//g' \
+			$(WORK_DIR)/$(TERRAFORM_PROVIDER_SOURCE)/$(TERRAFORM_DOCS_PATH)/load_balancer_pool_member.md > $(WORK_DIR)/$(TERRAFORM_PROVIDER_SOURCE)/$(TERRAFORM_DOCS_PATH)/load_balancer_pool_member.md.tmp && \
+		mv $(WORK_DIR)/$(TERRAFORM_PROVIDER_SOURCE)/$(TERRAFORM_DOCS_PATH)/load_balancer_pool_member.md.tmp $(WORK_DIR)/$(TERRAFORM_PROVIDER_SOURCE)/$(TERRAFORM_DOCS_PATH)/load_balancer_pool_member.md; \
+	fi
+	@$(OK) patched provider documentation
+
+generate.init: $(TERRAFORM_PROVIDER_SCHEMA) patch-docs
 
 .PHONY: $(TERRAFORM_PROVIDER_SCHEMA) pull-docs check-terraform-version
 # ====================================================================================
