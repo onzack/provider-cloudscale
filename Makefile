@@ -12,7 +12,7 @@ export TERRAFORM_DOWNLOAD_URL ?= https://github.com/opentofu/opentofu/releases/d
 # OpenTofu is the open-source fork of Terraform that remains under MPL 2.0
 TERRAFORM_VERSION_VALID := 1
 
-export TERRAFORM_PROVIDER_SOURCE ?= registry.terraform.io/cloudscale-ch/cloudscale
+export TERRAFORM_PROVIDER_SOURCE ?= cloudscale-ch/cloudscale
 export TERRAFORM_PROVIDER_SHORT_NAME ?= cloudscale-ch/cloudscale
 export TERRAFORM_PROVIDER_REPO ?= https://github.com/cloudscale-ch/terraform-provider-cloudscale
 export TERRAFORM_PROVIDER_VERSION ?= 5.0.0
