@@ -6,4 +6,12 @@ spec:
   forProvider:
     cidr: 10.0.0.0/24
     gatewayAddress: 10.0.0.1
-    networkUuid: 60163c01-7029-40a8-ad95-d655b677d054
+    # Option 1: Reference a Network resource by name
+    networkUuidRef:
+      name: test-net-michi
+    # Option 2: Use a selector to find the Network dynamically (comment out networkUuidRef if using this)
+    # networkUuidSelector:
+    #   matchLabels:
+    #     app: myapp
+    # Option 3: Hardcode the UUID (not recommended, comment out networkUuidRef if using this)
+    # networkUuid: 7d78eecc-509f-434c-a51b-7b52761f432b

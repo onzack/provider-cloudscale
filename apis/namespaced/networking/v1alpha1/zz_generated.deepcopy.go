@@ -9,6 +9,7 @@
 package v1alpha1
 
 import (
+	"github.com/crossplane/crossplane-runtime/v2/apis/common/v1"
 	runtime "k8s.io/apimachinery/pkg/runtime"
 )
 
@@ -2246,6 +2247,16 @@ func (in *SubnetInitParameters) DeepCopyInto(out *SubnetInitParameters) {
 		*out = new(string)
 		**out = **in
 	}
+	if in.NetworkUUIDRef != nil {
+		in, out := &in.NetworkUUIDRef, &out.NetworkUUIDRef
+		*out = new(v1.NamespacedReference)
+		(*in).DeepCopyInto(*out)
+	}
+	if in.NetworkUUIDSelector != nil {
+		in, out := &in.NetworkUUIDSelector, &out.NetworkUUIDSelector
+		*out = new(v1.NamespacedSelector)
+		(*in).DeepCopyInto(*out)
+	}
 	if in.Tags != nil {
 		in, out := &in.Tags, &out.Tags
 		*out = make(map[string]*string, len(*in))
@@ -2421,6 +2432,16 @@ func (in *SubnetParameters) DeepCopyInto(out *SubnetParameters) {
 		in, out := &in.NetworkUUID, &out.NetworkUUID
 		*out = new(string)
 		**out = **in
+	}
+	if in.NetworkUUIDRef != nil {
+		in, out := &in.NetworkUUIDRef, &out.NetworkUUIDRef
+		*out = new(v1.NamespacedReference)
+		(*in).DeepCopyInto(*out)
+	}
+	if in.NetworkUUIDSelector != nil {
+		in, out := &in.NetworkUUIDSelector, &out.NetworkUUIDSelector
+		*out = new(v1.NamespacedSelector)
+		(*in).DeepCopyInto(*out)
 	}
 	if in.Tags != nil {
 		in, out := &in.Tags, &out.Tags

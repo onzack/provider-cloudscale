@@ -12,8 +12,8 @@ func Configure(p *config.Provider) {
 		// This resource need the network in which subnet would be created
 		// as an input. And by defining it as a reference to github.com/onzack/provider-cloudscale/apis/namespaced/networking/v1alpha1.Network
 		// object, we can build cross resource referencing. See
-		// networkRef in the example in the Testing section below.
-		r.References["network"] = config.Reference{
+		// networkUuidRef in the example in the Testing section below.
+		r.References["network_uuid"] = config.Reference{
 			Type: "github.com/onzack/provider-cloudscale/apis/namespaced/networking/v1alpha1.Network",
 		}
 	})

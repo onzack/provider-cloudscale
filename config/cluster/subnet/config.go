@@ -13,7 +13,7 @@ func Configure(p *config.Provider) {
 		// as an input. And by defining it as a reference to github.com/onzack/provider-cloudscale/apis/cluster/networking/v1alpha1.Network
 		// object, we can build cross resource referencing. See
 		// networkRef in the example in the Testing section below.
-		r.References["network"] = config.Reference{
+		r.References["network_uuid"] = config.Reference{
 			Type: "github.com/onzack/provider-cloudscale/apis/cluster/networking/v1alpha1.Network",
 		}
 	})

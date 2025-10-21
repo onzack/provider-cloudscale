@@ -29,7 +29,16 @@ type SubnetInitParameters struct {
 	GatewayAddress *string `json:"gatewayAddress,omitempty" tf:"gateway_address,omitempty"`
 
 	// The network of the subnet.
+	// +crossplane:generate:reference:type=github.com/onzack/provider-cloudscale/apis/namespaced/networking/v1alpha1.Network
 	NetworkUUID *string `json:"networkUuid,omitempty" tf:"network_uuid,omitempty"`
+
+	// Reference to a Network in networking to populate networkUuid.
+	// +kubebuilder:validation:Optional
+	NetworkUUIDRef *v1.NamespacedReference `json:"networkUuidRef,omitempty" tf:"-"`
+
+	// Selector for a Network in networking to populate networkUuid.
+	// +kubebuilder:validation:Optional
+	NetworkUUIDSelector *v1.NamespacedSelector `json:"networkUuidSelector,omitempty" tf:"-"`
 
 	// Tags allow you to assign custom metadata to resources:
 	// tags = {
@@ -98,8 +107,17 @@ type SubnetParameters struct {
 	GatewayAddress *string `json:"gatewayAddress,omitempty" tf:"gateway_address,omitempty"`
 
 	// The network of the subnet.
+	// +crossplane:generate:reference:type=github.com/onzack/provider-cloudscale/apis/namespaced/networking/v1alpha1.Network
 	// +kubebuilder:validation:Optional
 	NetworkUUID *string `json:"networkUuid,omitempty" tf:"network_uuid,omitempty"`
+
+	// Reference to a Network in networking to populate networkUuid.
+	// +kubebuilder:validation:Optional
+	NetworkUUIDRef *v1.NamespacedReference `json:"networkUuidRef,omitempty" tf:"-"`
+
+	// Selector for a Network in networking to populate networkUuid.
+	// +kubebuilder:validation:Optional
+	NetworkUUIDSelector *v1.NamespacedSelector `json:"networkUuidSelector,omitempty" tf:"-"`
 
 	// Tags allow you to assign custom metadata to resources:
 	// tags = {
