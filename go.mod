@@ -7,7 +7,6 @@ require (
 	github.com/alecthomas/kingpin/v2 v2.4.0
 	github.com/crossplane/crossplane-runtime/v2 v2.0.0
 	github.com/crossplane/crossplane-tools v0.0.0-20250731192036-00d407d8b7ec
-	github.com/crossplane/upjet-provider-template v0.0.0-20251010091616-182743528405
 	github.com/crossplane/upjet/v2 v2.1.0-rc.0
 	github.com/pkg/errors v0.9.1
 	golang.org/x/tools v0.38.0

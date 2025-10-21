@@ -2,6 +2,18 @@ apiVersion: meta.pkg.crossplane.io/v1
 kind: Provider
 metadata:
   name: provider-cloudscale
+  annotations:
+    meta.crossplane.io/maintainer: ONZACK AG
+    meta.crossplane.io/source: github.com/onzack/provider-cloudscale
+    meta.crossplane.io/license: Apache-2.0
+    meta.crossplane.io/description: |
+      Crossplane provider for cloudscale.ch infrastructure
+    meta.crossplane.io/readme: |
+      This provider enables provisioning of cloudscale.ch resources via Crossplane.
+      
+      Resources include: servers, volumes, networks, subnets, load balancers, floating IPs, and more.
 spec:
-  capabilities:
-    - SafeStart
+  controller:
+    image: ghcr.io/onzack/provider-cloudscale
+  crossplane:
+    version: ">=v1.14.0"
