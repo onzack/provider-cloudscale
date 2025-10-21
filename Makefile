@@ -12,7 +12,8 @@ export TERRAFORM_DOWNLOAD_URL ?= https://github.com/opentofu/opentofu/releases/d
 # OpenTofu is the open-source fork of Terraform that remains under MPL 2.0
 TERRAFORM_VERSION_VALID := 1
 
-export TERRAFORM_PROVIDER_SOURCE ?= cloudscale-ch/cloudscale
+export TERRAFORM_PROVIDER_SOURCE ?= registry.terraform.io/cloudscale-ch/cloudscale
+export TERRAFORM_PROVIDER_SHORT_NAME ?= cloudscale-ch/cloudscale
 export TERRAFORM_PROVIDER_REPO ?= https://github.com/cloudscale-ch/terraform-provider-cloudscale
 export TERRAFORM_PROVIDER_VERSION ?= 5.0.0
 export TERRAFORM_PROVIDER_DOWNLOAD_NAME ?= terraform-provider-cloudscale
@@ -125,29 +126,29 @@ $(TERRAFORM): check-terraform-version
 $(TERRAFORM_PROVIDER_SCHEMA): $(TERRAFORM)
 	@$(INFO) generating provider schema for $(TERRAFORM_PROVIDER_SOURCE) $(TERRAFORM_PROVIDER_VERSION)
 	@mkdir -p $(TERRAFORM_WORKDIR)
-	@echo '{"terraform":[{"required_providers":[{"provider":{"source":"registry.terraform.io/'"$(TERRAFORM_PROVIDER_SOURCE)"'","version":"'"$(TERRAFORM_PROVIDER_VERSION)"'"}}],"required_version":"'"$(TERRAFORM_VERSION)"'"}]}' > $(TERRAFORM_WORKDIR)/main.tf.json
+	@echo '{"terraform":[{"required_providers":[{"provider":{"source":"'"$(TERRAFORM_PROVIDER_SOURCE)"'","version":"'"$(TERRAFORM_PROVIDER_VERSION)"'"}}],"required_version":"'"$(TERRAFORM_VERSION)"'"}]}' > $(TERRAFORM_WORKDIR)/main.tf.json
 	@$(TERRAFORM) -chdir=$(TERRAFORM_WORKDIR) init > $(TERRAFORM_WORKDIR)/terraform-logs.txt 2>&1
 	@$(TERRAFORM) -chdir=$(TERRAFORM_WORKDIR) providers schema -json=true > $(TERRAFORM_PROVIDER_SCHEMA) 2>> $(TERRAFORM_WORKDIR)/terraform-logs.txt
 	@$(OK) generating provider schema for $(TERRAFORM_PROVIDER_SOURCE) $(TERRAFORM_PROVIDER_VERSION)
 
 pull-docs:
-	@if [ ! -d "$(WORK_DIR)/$(TERRAFORM_PROVIDER_SOURCE)" ]; then \
-  		mkdir -p "$(WORK_DIR)/$(TERRAFORM_PROVIDER_SOURCE)" && \
-		git clone -c advice.detachedHead=false --depth 1 --filter=blob:none --branch "v$(TERRAFORM_PROVIDER_VERSION)" --sparse "$(TERRAFORM_PROVIDER_REPO)" "$(WORK_DIR)/$(TERRAFORM_PROVIDER_SOURCE)"; \
+	@if [ ! -d "$(WORK_DIR)/$(TERRAFORM_PROVIDER_SHORT_NAME)" ]; then \
+  		mkdir -p "$(WORK_DIR)/$(TERRAFORM_PROVIDER_SHORT_NAME)" && \
+		git clone -c advice.detachedHead=false --depth 1 --filter=blob:none --branch "v$(TERRAFORM_PROVIDER_VERSION)" --sparse "$(TERRAFORM_PROVIDER_REPO)" "$(WORK_DIR)/$(TERRAFORM_PROVIDER_SHORT_NAME)"; \
 	fi
-	@git -C "$(WORK_DIR)/$(TERRAFORM_PROVIDER_SOURCE)" sparse-checkout set "$(TERRAFORM_DOCS_PATH)"
+	@git -C "$(WORK_DIR)/$(TERRAFORM_PROVIDER_SHORT_NAME)" sparse-checkout set "$(TERRAFORM_DOCS_PATH)"
 
 patch-docs: pull-docs
 	@$(INFO) patching provider documentation for scraper compatibility
-	@for file in $(WORK_DIR)/$(TERRAFORM_PROVIDER_SOURCE)/$(TERRAFORM_DOCS_PATH)/*.md; do \
+	@for file in $(WORK_DIR)/$(TERRAFORM_PROVIDER_SHORT_NAME)/$(TERRAFORM_DOCS_PATH)/*.md; do \
 		if [ -f "$$file" ] && ! grep -q "^description:" "$$file" 2>/dev/null; then \
 			awk 'NR==1{print; print "description: \"cloudscale.ch resource\""; next}1' "$$file" > "$$file.tmp" && mv "$$file.tmp" "$$file"; \
 		fi; \
 	done
-	@if [ -f "$(WORK_DIR)/$(TERRAFORM_PROVIDER_SOURCE)/$(TERRAFORM_DOCS_PATH)/load_balancer_pool_member.md" ]; then \
+	@if [ -f "$(WORK_DIR)/$(TERRAFORM_PROVIDER_SHORT_NAME)/$(TERRAFORM_DOCS_PATH)/load_balancer_pool_member.md" ]; then \
 		sed 's/cloudscale_server.web-worker\[count.index\].interfaces\[1\].addresses\[0\].address/cloudscale_server.web-worker.interfaces[0].addresses[0].address/g; /count = 2/d; s/$${count.index}//g' \
-			$(WORK_DIR)/$(TERRAFORM_PROVIDER_SOURCE)/$(TERRAFORM_DOCS_PATH)/load_balancer_pool_member.md > $(WORK_DIR)/$(TERRAFORM_PROVIDER_SOURCE)/$(TERRAFORM_DOCS_PATH)/load_balancer_pool_member.md.tmp && \
-		mv $(WORK_DIR)/$(TERRAFORM_PROVIDER_SOURCE)/$(TERRAFORM_DOCS_PATH)/load_balancer_pool_member.md.tmp $(WORK_DIR)/$(TERRAFORM_PROVIDER_SOURCE)/$(TERRAFORM_DOCS_PATH)/load_balancer_pool_member.md; \
+			$(WORK_DIR)/$(TERRAFORM_PROVIDER_SHORT_NAME)/$(TERRAFORM_DOCS_PATH)/load_balancer_pool_member.md > $(WORK_DIR)/$(TERRAFORM_PROVIDER_SHORT_NAME)/$(TERRAFORM_DOCS_PATH)/load_balancer_pool_member.md.tmp && \
+		mv $(WORK_DIR)/$(TERRAFORM_PROVIDER_SHORT_NAME)/$(TERRAFORM_DOCS_PATH)/load_balancer_pool_member.md.tmp $(WORK_DIR)/$(TERRAFORM_PROVIDER_SHORT_NAME)/$(TERRAFORM_DOCS_PATH)/load_balancer_pool_member.md; \
 	fi
 	@$(OK) patched provider documentation
 
