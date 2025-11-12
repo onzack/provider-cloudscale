@@ -20,7 +20,16 @@ type AddressesInitParameters struct {
 	Address *string `json:"address,omitempty" tf:"address,omitempty"`
 
 	// The UUID of the subnet this address should be part of. Must be compatible with network_uuid if both are specified.
+	// +crossplane:generate:reference:type=github.com/onzack/provider-cloudscale/apis/namespaced/networking/v1alpha1.Subnet
 	SubnetUUID *string `json:"subnetUuid,omitempty" tf:"subnet_uuid,omitempty"`
+
+	// Reference to a Subnet in networking to populate subnetUuid.
+	// +kubebuilder:validation:Optional
+	SubnetUUIDRef *v1.NamespacedReference `json:"subnetUuidRef,omitempty" tf:"-"`
+
+	// Selector for a Subnet in networking to populate subnetUuid.
+	// +kubebuilder:validation:Optional
+	SubnetUUIDSelector *v1.NamespacedSelector `json:"subnetUuidSelector,omitempty" tf:"-"`
 }
 
 type AddressesObservation struct {
@@ -57,8 +66,17 @@ type AddressesParameters struct {
 	Address *string `json:"address,omitempty" tf:"address,omitempty"`
 
 	// The UUID of the subnet this address should be part of. Must be compatible with network_uuid if both are specified.
+	// +crossplane:generate:reference:type=github.com/onzack/provider-cloudscale/apis/namespaced/networking/v1alpha1.Subnet
 	// +kubebuilder:validation:Optional
 	SubnetUUID *string `json:"subnetUuid,omitempty" tf:"subnet_uuid,omitempty"`
+
+	// Reference to a Subnet in networking to populate subnetUuid.
+	// +kubebuilder:validation:Optional
+	SubnetUUIDRef *v1.NamespacedReference `json:"subnetUuidRef,omitempty" tf:"-"`
+
+	// Selector for a Subnet in networking to populate subnetUuid.
+	// +kubebuilder:validation:Optional
+	SubnetUUIDSelector *v1.NamespacedSelector `json:"subnetUuidSelector,omitempty" tf:"-"`
 }
 
 type InterfacesInitParameters struct {
@@ -67,7 +85,16 @@ type InterfacesInitParameters struct {
 	Addresses []AddressesInitParameters `json:"addresses,omitempty" tf:"addresses,omitempty"`
 
 	// The UUID of the private network this interface should be attached to. Must be compatible with subnet_uuid if both are specified.
+	// +crossplane:generate:reference:type=github.com/onzack/provider-cloudscale/apis/namespaced/networking/v1alpha1.Network
 	NetworkUUID *string `json:"networkUuid,omitempty" tf:"network_uuid,omitempty"`
+
+	// Reference to a Network in networking to populate networkUuid.
+	// +kubebuilder:validation:Optional
+	NetworkUUIDRef *v1.NamespacedReference `json:"networkUuidRef,omitempty" tf:"-"`
+
+	// Selector for a Network in networking to populate networkUuid.
+	// +kubebuilder:validation:Optional
+	NetworkUUIDSelector *v1.NamespacedSelector `json:"networkUuidSelector,omitempty" tf:"-"`
 
 	// You need to set this to true if no address should be configured, e.g. if you want to attach to a network without a subnet.
 	NoAddress *bool `json:"noAddress,omitempty" tf:"no_address,omitempty"`
@@ -104,8 +131,17 @@ type InterfacesParameters struct {
 	Addresses []AddressesParameters `json:"addresses,omitempty" tf:"addresses,omitempty"`
 
 	// The UUID of the private network this interface should be attached to. Must be compatible with subnet_uuid if both are specified.
+	// +crossplane:generate:reference:type=github.com/onzack/provider-cloudscale/apis/namespaced/networking/v1alpha1.Network
 	// +kubebuilder:validation:Optional
 	NetworkUUID *string `json:"networkUuid,omitempty" tf:"network_uuid,omitempty"`
+
+	// Reference to a Network in networking to populate networkUuid.
+	// +kubebuilder:validation:Optional
+	NetworkUUIDRef *v1.NamespacedReference `json:"networkUuidRef,omitempty" tf:"-"`
+
+	// Selector for a Network in networking to populate networkUuid.
+	// +kubebuilder:validation:Optional
+	NetworkUUIDSelector *v1.NamespacedSelector `json:"networkUuidSelector,omitempty" tf:"-"`
 
 	// You need to set this to true if no address should be configured, e.g. if you want to attach to a network without a subnet.
 	// +kubebuilder:validation:Optional

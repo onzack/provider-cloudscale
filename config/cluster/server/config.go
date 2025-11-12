@@ -17,11 +17,19 @@ func Configure(p *config.Provider) {
 			Type: "github.com/onzack/provider-cloudscale/apis/cluster/compute/v1alpha1.ServerGroup",
 		}
 
+		// This resource need the network in which server would be created
+		// as an input. And by defining it as a reference to cloudscale.com/v1alpha1.Network
+		// object, we can build cross resource referencing. See
+		// networkUuidRef in the example in the Testing section below.
+		r.References["interfaces.network_uuid"] = config.Reference{
+			Type: "github.com/onzack/provider-cloudscale/apis/cluster/networking/v1alpha1.Network",
+		}
+
 		// This resource need the subnet in which server would be created
 		// as an input. And by defining it as a reference to cloudscale.com/v1alpha1.Subnet
 		// object, we can build cross resource referencing. See
 		// subnetRef in the example in the Testing section below.
-		r.References["subnet"] = config.Reference{
+		r.References["interfaces.addresses.subnet_uuid"] = config.Reference{
 			Type: "github.com/onzack/provider-cloudscale/apis/cluster/networking/v1alpha1.Subnet",
 		}
 	})

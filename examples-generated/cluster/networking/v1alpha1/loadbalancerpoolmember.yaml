@@ -82,7 +82,9 @@ spec:
     interfaces:
     - type: public
     - addresses:
-      - subnetUuid: ${cloudscale_subnet.backend-subnet.id}
+      - subnetUuidSelector:
+          matchLabels:
+            testing.upbound.io/example-name: backend-subnet
       type: private
     name: web-worker
     sshKeys:

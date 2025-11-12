@@ -53,7 +53,9 @@ spec:
     - type: public
     - addresses:
       - address: 10.11.12.13
-        subnetUuid: cloudscale_subnet.privnet-subnet.id
+        subnetUuidSelector:
+          matchLabels:
+            testing.upbound.io/example-name: example
       type: private
     name: fix
     sshKeys:

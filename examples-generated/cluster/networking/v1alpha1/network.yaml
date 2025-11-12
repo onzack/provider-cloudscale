@@ -28,7 +28,9 @@ spec:
     imageSlug: debian-11
     interfaces:
     - type: public
-    - networkUuid: ${cloudscale_network.privnet.id}
+    - networkUuidSelector:
+        matchLabels:
+          testing.upbound.io/example-name: privnet
       type: private
     name: gateway
     sshKeys:
