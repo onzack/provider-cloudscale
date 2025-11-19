@@ -21,6 +21,23 @@ func (mg *Server) ResolveReferences(ctx context.Context, c client.Reader) error 
 	var rsp reference.ResolutionResponse
 	var err error
 
+	rsp, err = r.Resolve(ctx, reference.ResolutionRequest{
+		CurrentValue: reference.FromPtrValue(mg.Spec.ForProvider.ImageUUID),
+		Extract:      reference.ExternalName(),
+		Namespace:    mg.GetNamespace(),
+		Reference:    mg.Spec.ForProvider.ImageUUIDRef,
+		Selector:     mg.Spec.ForProvider.ImageUUIDSelector,
+		To: reference.To{
+			List:    &CustomImageList{},
+			Managed: &CustomImage{},
+		},
+	})
+	if err != nil {
+		return errors.Wrap(err, "mg.Spec.ForProvider.ImageUUID")
+	}
+	mg.Spec.ForProvider.ImageUUID = reference.ToPtrValue(rsp.ResolvedValue)
+	mg.Spec.ForProvider.ImageUUIDRef = rsp.ResolvedReference
+
 	for i3 := 0; i3 < len(mg.Spec.ForProvider.Interfaces); i3++ {
 		for i4 := 0; i4 < len(mg.Spec.ForProvider.Interfaces[i3].Addresses); i4++ {
 			rsp, err = r.Resolve(ctx, reference.ResolutionRequest{
@@ -61,6 +78,23 @@ func (mg *Server) ResolveReferences(ctx context.Context, c client.Reader) error 
 		mg.Spec.ForProvider.Interfaces[i3].NetworkUUIDRef = rsp.ResolvedReference
 
 	}
+	rsp, err = r.Resolve(ctx, reference.ResolutionRequest{
+		CurrentValue: reference.FromPtrValue(mg.Spec.InitProvider.ImageUUID),
+		Extract:      reference.ExternalName(),
+		Namespace:    mg.GetNamespace(),
+		Reference:    mg.Spec.InitProvider.ImageUUIDRef,
+		Selector:     mg.Spec.InitProvider.ImageUUIDSelector,
+		To: reference.To{
+			List:    &CustomImageList{},
+			Managed: &CustomImage{},
+		},
+	})
+	if err != nil {
+		return errors.Wrap(err, "mg.Spec.InitProvider.ImageUUID")
+	}
+	mg.Spec.InitProvider.ImageUUID = reference.ToPtrValue(rsp.ResolvedValue)
+	mg.Spec.InitProvider.ImageUUIDRef = rsp.ResolvedReference
+
 	for i3 := 0; i3 < len(mg.Spec.InitProvider.Interfaces); i3++ {
 		for i4 := 0; i4 < len(mg.Spec.InitProvider.Interfaces[i3].Addresses); i4++ {
 			rsp, err = r.Resolve(ctx, reference.ResolutionRequest{

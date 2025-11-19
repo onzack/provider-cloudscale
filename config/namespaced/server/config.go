@@ -32,5 +32,13 @@ func Configure(p *config.Provider) {
 		r.References["interfaces.addresses.subnet_uuid"] = config.Reference{
 			Type: "github.com/onzack/provider-cloudscale/apis/namespaced/networking/v1alpha1.Subnet",
 		}
+
+		// This resource need the custom image from which server would be created
+		// as an input. And by defining it as a reference to github.com/onzack/provider-cloudscale/apis/namespaced/compute/v1alpha1.CustomImage
+		// object, we can build cross resource referencing. See
+		// imageUuidRef in the example in the Testing section below.
+		r.References["image_uuid"] = config.Reference{
+			Type: "github.com/onzack/provider-cloudscale/apis/namespaced/compute/v1alpha1.CustomImage",
+		}
 	})
 }

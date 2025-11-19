@@ -2,14 +2,12 @@
 
 `provider-cloudscale` is a [Crossplane](https://crossplane.io/) provider
 cloudscale that is built using [Upjet](https://github.com/crossplane/upjet) code
-generation tools and exposes XRM-conformant managed resources for the Cloudscale
-API.
+generation tools and exposes XRM-conformant managed resources for the [Cloudscale
+API](https://www.cloudscale.ch/en/api/v1).
 
 ## Getting Started
 
-This cloudscale serves as a starting point for generating a new [Crossplane Provider](https://docs.crossplane.io/latest/packages/providers/) using the [`upjet`](https://github.com/crossplane/upjet) tooling. Please follow the guide linked below to generate a new Provider:
-
-https://github.com/crossplane/upjet/blob/main/docs/generating-a-provider.md
+This cloudscale serves as a starting point for generating a new [Crossplane Provider](https://docs.crossplane.io/latest/packages/providers/) using the [`upjet`](https://github.com/crossplane/upjet) tooling. 
 
 ## Developing
 

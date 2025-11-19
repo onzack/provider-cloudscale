@@ -13,7 +13,9 @@ spec:
     name: web-lb1-pool-member-
     poolUuid: ${cloudscale_load_balancer_pool.lb1-pool.id}
     protocolPort: 80
-    subnetUuid: ${cloudscale_subnet.backend-subnet.id}
+    subnetUuidSelector:
+      matchLabels:
+        testing.upbound.io/example-name: backend-subnet
 
 ---
 

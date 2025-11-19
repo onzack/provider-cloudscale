@@ -186,7 +186,16 @@ type ServerInitParameters struct {
 	ImageSlug *string `json:"imageSlug,omitempty" tf:"image_slug,omitempty"`
 
 	// The UUID of the custom image to use for the new server. Note: This is the recommended approach for custom images.
+	// +crossplane:generate:reference:type=github.com/onzack/provider-cloudscale/apis/namespaced/compute/v1alpha1.CustomImage
 	ImageUUID *string `json:"imageUuid,omitempty" tf:"image_uuid,omitempty"`
+
+	// Reference to a CustomImage in compute to populate imageUuid.
+	// +kubebuilder:validation:Optional
+	ImageUUIDRef *v1.NamespacedReference `json:"imageUuidRef,omitempty" tf:"-"`
+
+	// Selector for a CustomImage in compute to populate imageUuid.
+	// +kubebuilder:validation:Optional
+	ImageUUIDSelector *v1.NamespacedSelector `json:"imageUuidSelector,omitempty" tf:"-"`
 
 	// A list of interface configuration objects (see example). Each interface object has the following attributes:
 	Interfaces []InterfacesInitParameters `json:"interfaces,omitempty" tf:"interfaces,omitempty"`
@@ -351,8 +360,17 @@ type ServerParameters struct {
 	ImageSlug *string `json:"imageSlug,omitempty" tf:"image_slug,omitempty"`
 
 	// The UUID of the custom image to use for the new server. Note: This is the recommended approach for custom images.
+	// +crossplane:generate:reference:type=github.com/onzack/provider-cloudscale/apis/namespaced/compute/v1alpha1.CustomImage
 	// +kubebuilder:validation:Optional
 	ImageUUID *string `json:"imageUuid,omitempty" tf:"image_uuid,omitempty"`
+
+	// Reference to a CustomImage in compute to populate imageUuid.
+	// +kubebuilder:validation:Optional
+	ImageUUIDRef *v1.NamespacedReference `json:"imageUuidRef,omitempty" tf:"-"`
+
+	// Selector for a CustomImage in compute to populate imageUuid.
+	// +kubebuilder:validation:Optional
+	ImageUUIDSelector *v1.NamespacedSelector `json:"imageUuidSelector,omitempty" tf:"-"`
 
 	// A list of interface configuration objects (see example). Each interface object has the following attributes:
 	// +kubebuilder:validation:Optional

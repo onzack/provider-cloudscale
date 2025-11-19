@@ -35,7 +35,16 @@ type LoadBalancerPoolMemberInitParameters struct {
 	ProtocolPort *float64 `json:"protocolPort,omitempty" tf:"protocol_port,omitempty"`
 
 	// The subnet UUID of the address must be specified here.
+	// +crossplane:generate:reference:type=github.com/onzack/provider-cloudscale/apis/namespaced/networking/v1alpha1.Subnet
 	SubnetUUID *string `json:"subnetUuid,omitempty" tf:"subnet_uuid,omitempty"`
+
+	// Reference to a Subnet in networking to populate subnetUuid.
+	// +kubebuilder:validation:Optional
+	SubnetUUIDRef *v1.NamespacedReference `json:"subnetUuidRef,omitempty" tf:"-"`
+
+	// Selector for a Subnet in networking to populate subnetUuid.
+	// +kubebuilder:validation:Optional
+	SubnetUUIDSelector *v1.NamespacedSelector `json:"subnetUuidSelector,omitempty" tf:"-"`
 
 	// Tags allow you to assign custom metadata to resources:
 	// tags = {
@@ -128,8 +137,17 @@ type LoadBalancerPoolMemberParameters struct {
 	ProtocolPort *float64 `json:"protocolPort,omitempty" tf:"protocol_port,omitempty"`
 
 	// The subnet UUID of the address must be specified here.
+	// +crossplane:generate:reference:type=github.com/onzack/provider-cloudscale/apis/namespaced/networking/v1alpha1.Subnet
 	// +kubebuilder:validation:Optional
 	SubnetUUID *string `json:"subnetUuid,omitempty" tf:"subnet_uuid,omitempty"`
+
+	// Reference to a Subnet in networking to populate subnetUuid.
+	// +kubebuilder:validation:Optional
+	SubnetUUIDRef *v1.NamespacedReference `json:"subnetUuidRef,omitempty" tf:"-"`
+
+	// Selector for a Subnet in networking to populate subnetUuid.
+	// +kubebuilder:validation:Optional
+	SubnetUUIDSelector *v1.NamespacedSelector `json:"subnetUuidSelector,omitempty" tf:"-"`
 
 	// Tags allow you to assign custom metadata to resources:
 	// tags = {
@@ -182,7 +200,6 @@ type LoadBalancerPoolMember struct {
 	// +kubebuilder:validation:XValidation:rule="!('*' in self.managementPolicies || 'Create' in self.managementPolicies || 'Update' in self.managementPolicies) || has(self.forProvider.name) || (has(self.initProvider) && has(self.initProvider.name))",message="spec.forProvider.name is a required parameter"
 	// +kubebuilder:validation:XValidation:rule="!('*' in self.managementPolicies || 'Create' in self.managementPolicies || 'Update' in self.managementPolicies) || has(self.forProvider.poolUuid) || (has(self.initProvider) && has(self.initProvider.poolUuid))",message="spec.forProvider.poolUuid is a required parameter"
 	// +kubebuilder:validation:XValidation:rule="!('*' in self.managementPolicies || 'Create' in self.managementPolicies || 'Update' in self.managementPolicies) || has(self.forProvider.protocolPort) || (has(self.initProvider) && has(self.initProvider.protocolPort))",message="spec.forProvider.protocolPort is a required parameter"
-	// +kubebuilder:validation:XValidation:rule="!('*' in self.managementPolicies || 'Create' in self.managementPolicies || 'Update' in self.managementPolicies) || has(self.forProvider.subnetUuid) || (has(self.initProvider) && has(self.initProvider.subnetUuid))",message="spec.forProvider.subnetUuid is a required parameter"
 	Spec   LoadBalancerPoolMemberSpec   `json:"spec"`
 	Status LoadBalancerPoolMemberStatus `json:"status,omitempty"`
 }

@@ -13,6 +13,187 @@ import (
 	client "sigs.k8s.io/controller-runtime/pkg/client"
 )
 
+// ResolveReferences of this LoadBalancer.
+func (mg *LoadBalancer) ResolveReferences(ctx context.Context, c client.Reader) error {
+	r := reference.NewAPINamespacedResolver(c, mg)
+
+	var rsp reference.NamespacedResolutionResponse
+	var err error
+
+	for i3 := 0; i3 < len(mg.Spec.ForProvider.VipAddresses); i3++ {
+		rsp, err = r.Resolve(ctx, reference.NamespacedResolutionRequest{
+			CurrentValue: reference.FromPtrValue(mg.Spec.ForProvider.VipAddresses[i3].SubnetUUID),
+			Extract:      reference.ExternalName(),
+			Namespace:    mg.GetNamespace(),
+			Reference:    mg.Spec.ForProvider.VipAddresses[i3].SubnetUUIDRef,
+			Selector:     mg.Spec.ForProvider.VipAddresses[i3].SubnetUUIDSelector,
+			To: reference.To{
+				List:    &SubnetList{},
+				Managed: &Subnet{},
+			},
+		})
+		if err != nil {
+			return errors.Wrap(err, "mg.Spec.ForProvider.VipAddresses[i3].SubnetUUID")
+		}
+		mg.Spec.ForProvider.VipAddresses[i3].SubnetUUID = reference.ToPtrValue(rsp.ResolvedValue)
+		mg.Spec.ForProvider.VipAddresses[i3].SubnetUUIDRef = rsp.ResolvedReference
+
+	}
+	for i3 := 0; i3 < len(mg.Spec.InitProvider.VipAddresses); i3++ {
+		rsp, err = r.Resolve(ctx, reference.NamespacedResolutionRequest{
+			CurrentValue: reference.FromPtrValue(mg.Spec.InitProvider.VipAddresses[i3].SubnetUUID),
+			Extract:      reference.ExternalName(),
+			Namespace:    mg.GetNamespace(),
+			Reference:    mg.Spec.InitProvider.VipAddresses[i3].SubnetUUIDRef,
+			Selector:     mg.Spec.InitProvider.VipAddresses[i3].SubnetUUIDSelector,
+			To: reference.To{
+				List:    &SubnetList{},
+				Managed: &Subnet{},
+			},
+		})
+		if err != nil {
+			return errors.Wrap(err, "mg.Spec.InitProvider.VipAddresses[i3].SubnetUUID")
+		}
+		mg.Spec.InitProvider.VipAddresses[i3].SubnetUUID = reference.ToPtrValue(rsp.ResolvedValue)
+		mg.Spec.InitProvider.VipAddresses[i3].SubnetUUIDRef = rsp.ResolvedReference
+
+	}
+
+	return nil
+}
+
+// ResolveReferences of this LoadBalancerHealthMonitor.
+func (mg *LoadBalancerHealthMonitor) ResolveReferences(ctx context.Context, c client.Reader) error {
+	r := reference.NewAPINamespacedResolver(c, mg)
+
+	var rsp reference.NamespacedResolutionResponse
+	var err error
+
+	rsp, err = r.Resolve(ctx, reference.NamespacedResolutionRequest{
+		CurrentValue: reference.FromPtrValue(mg.Spec.ForProvider.PoolUUID),
+		Extract:      reference.ExternalName(),
+		Namespace:    mg.GetNamespace(),
+		Reference:    mg.Spec.ForProvider.PoolUUIDRef,
+		Selector:     mg.Spec.ForProvider.PoolUUIDSelector,
+		To: reference.To{
+			List:    &LoadBalancerPoolList{},
+			Managed: &LoadBalancerPool{},
+		},
+	})
+	if err != nil {
+		return errors.Wrap(err, "mg.Spec.ForProvider.PoolUUID")
+	}
+	mg.Spec.ForProvider.PoolUUID = reference.ToPtrValue(rsp.ResolvedValue)
+	mg.Spec.ForProvider.PoolUUIDRef = rsp.ResolvedReference
+
+	rsp, err = r.Resolve(ctx, reference.NamespacedResolutionRequest{
+		CurrentValue: reference.FromPtrValue(mg.Spec.InitProvider.PoolUUID),
+		Extract:      reference.ExternalName(),
+		Namespace:    mg.GetNamespace(),
+		Reference:    mg.Spec.InitProvider.PoolUUIDRef,
+		Selector:     mg.Spec.InitProvider.PoolUUIDSelector,
+		To: reference.To{
+			List:    &LoadBalancerPoolList{},
+			Managed: &LoadBalancerPool{},
+		},
+	})
+	if err != nil {
+		return errors.Wrap(err, "mg.Spec.InitProvider.PoolUUID")
+	}
+	mg.Spec.InitProvider.PoolUUID = reference.ToPtrValue(rsp.ResolvedValue)
+	mg.Spec.InitProvider.PoolUUIDRef = rsp.ResolvedReference
+
+	return nil
+}
+
+// ResolveReferences of this LoadBalancerListener.
+func (mg *LoadBalancerListener) ResolveReferences(ctx context.Context, c client.Reader) error {
+	r := reference.NewAPINamespacedResolver(c, mg)
+
+	var rsp reference.NamespacedResolutionResponse
+	var err error
+
+	rsp, err = r.Resolve(ctx, reference.NamespacedResolutionRequest{
+		CurrentValue: reference.FromPtrValue(mg.Spec.ForProvider.PoolUUID),
+		Extract:      reference.ExternalName(),
+		Namespace:    mg.GetNamespace(),
+		Reference:    mg.Spec.ForProvider.PoolUUIDRef,
+		Selector:     mg.Spec.ForProvider.PoolUUIDSelector,
+		To: reference.To{
+			List:    &LoadBalancerPoolList{},
+			Managed: &LoadBalancerPool{},
+		},
+	})
+	if err != nil {
+		return errors.Wrap(err, "mg.Spec.ForProvider.PoolUUID")
+	}
+	mg.Spec.ForProvider.PoolUUID = reference.ToPtrValue(rsp.ResolvedValue)
+	mg.Spec.ForProvider.PoolUUIDRef = rsp.ResolvedReference
+
+	rsp, err = r.Resolve(ctx, reference.NamespacedResolutionRequest{
+		CurrentValue: reference.FromPtrValue(mg.Spec.InitProvider.PoolUUID),
+		Extract:      reference.ExternalName(),
+		Namespace:    mg.GetNamespace(),
+		Reference:    mg.Spec.InitProvider.PoolUUIDRef,
+		Selector:     mg.Spec.InitProvider.PoolUUIDSelector,
+		To: reference.To{
+			List:    &LoadBalancerPoolList{},
+			Managed: &LoadBalancerPool{},
+		},
+	})
+	if err != nil {
+		return errors.Wrap(err, "mg.Spec.InitProvider.PoolUUID")
+	}
+	mg.Spec.InitProvider.PoolUUID = reference.ToPtrValue(rsp.ResolvedValue)
+	mg.Spec.InitProvider.PoolUUIDRef = rsp.ResolvedReference
+
+	return nil
+}
+
+// ResolveReferences of this LoadBalancerPoolMember.
+func (mg *LoadBalancerPoolMember) ResolveReferences(ctx context.Context, c client.Reader) error {
+	r := reference.NewAPINamespacedResolver(c, mg)
+
+	var rsp reference.NamespacedResolutionResponse
+	var err error
+
+	rsp, err = r.Resolve(ctx, reference.NamespacedResolutionRequest{
+		CurrentValue: reference.FromPtrValue(mg.Spec.ForProvider.SubnetUUID),
+		Extract:      reference.ExternalName(),
+		Namespace:    mg.GetNamespace(),
+		Reference:    mg.Spec.ForProvider.SubnetUUIDRef,
+		Selector:     mg.Spec.ForProvider.SubnetUUIDSelector,
+		To: reference.To{
+			List:    &SubnetList{},
+			Managed: &Subnet{},
+		},
+	})
+	if err != nil {
+		return errors.Wrap(err, "mg.Spec.ForProvider.SubnetUUID")
+	}
+	mg.Spec.ForProvider.SubnetUUID = reference.ToPtrValue(rsp.ResolvedValue)
+	mg.Spec.ForProvider.SubnetUUIDRef = rsp.ResolvedReference
+
+	rsp, err = r.Resolve(ctx, reference.NamespacedResolutionRequest{
+		CurrentValue: reference.FromPtrValue(mg.Spec.InitProvider.SubnetUUID),
+		Extract:      reference.ExternalName(),
+		Namespace:    mg.GetNamespace(),
+		Reference:    mg.Spec.InitProvider.SubnetUUIDRef,
+		Selector:     mg.Spec.InitProvider.SubnetUUIDSelector,
+		To: reference.To{
+			List:    &SubnetList{},
+			Managed: &Subnet{},
+		},
+	})
+	if err != nil {
+		return errors.Wrap(err, "mg.Spec.InitProvider.SubnetUUID")
+	}
+	mg.Spec.InitProvider.SubnetUUID = reference.ToPtrValue(rsp.ResolvedValue)
+	mg.Spec.InitProvider.SubnetUUIDRef = rsp.ResolvedReference
+
+	return nil
+}
+
 // ResolveReferences of this Subnet.
 func (mg *Subnet) ResolveReferences(ctx context.Context, c client.Reader) error {
 	r := reference.NewAPINamespacedResolver(c, mg)

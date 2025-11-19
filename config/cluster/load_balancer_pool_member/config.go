@@ -25,5 +25,13 @@ func Configure(p *config.Provider) {
 		r.References["server"] = config.Reference{
 			Type: "github.com/onzack/provider-cloudscale/apis/cluster/compute/v1alpha1.Server",
 		}
+
+		// This resource need the subnet in which pool member would be created
+		// as an input. And by defining it as a reference to github.com/onzack/provider-cloudscale/apis/cluster/networking/v1alpha1.Subnet
+		// object, we can build cross resource referencing. See
+		// subnetUuidRef in the example in the Testing section below.
+		r.References["subnet_uuid"] = config.Reference{
+			Type: "github.com/onzack/provider-cloudscale/apis/cluster/networking/v1alpha1.Subnet",
+		}
 	})
 }

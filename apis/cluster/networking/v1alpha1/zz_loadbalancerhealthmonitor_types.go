@@ -37,7 +37,16 @@ type LoadBalancerHealthMonitorInitParameters struct {
 	HTTPVersion *string `json:"httpVersion,omitempty" tf:"http_version,omitempty"`
 
 	// The pool of the health monitor.
+	// +crossplane:generate:reference:type=github.com/onzack/provider-cloudscale/apis/cluster/networking/v1alpha1.LoadBalancerPool
 	PoolUUID *string `json:"poolUuid,omitempty" tf:"pool_uuid,omitempty"`
+
+	// Reference to a LoadBalancerPool in networking to populate poolUuid.
+	// +kubebuilder:validation:Optional
+	PoolUUIDRef *v1.Reference `json:"poolUuidRef,omitempty" tf:"-"`
+
+	// Selector for a LoadBalancerPool in networking to populate poolUuid.
+	// +kubebuilder:validation:Optional
+	PoolUUIDSelector *v1.Selector `json:"poolUuidSelector,omitempty" tf:"-"`
 
 	// Tags allow you to assign custom metadata to resources:
 	// +mapType=granular
@@ -136,8 +145,17 @@ type LoadBalancerHealthMonitorParameters struct {
 	HTTPVersion *string `json:"httpVersion,omitempty" tf:"http_version,omitempty"`
 
 	// The pool of the health monitor.
+	// +crossplane:generate:reference:type=github.com/onzack/provider-cloudscale/apis/cluster/networking/v1alpha1.LoadBalancerPool
 	// +kubebuilder:validation:Optional
 	PoolUUID *string `json:"poolUuid,omitempty" tf:"pool_uuid,omitempty"`
+
+	// Reference to a LoadBalancerPool in networking to populate poolUuid.
+	// +kubebuilder:validation:Optional
+	PoolUUIDRef *v1.Reference `json:"poolUuidRef,omitempty" tf:"-"`
+
+	// Selector for a LoadBalancerPool in networking to populate poolUuid.
+	// +kubebuilder:validation:Optional
+	PoolUUIDSelector *v1.Selector `json:"poolUuidSelector,omitempty" tf:"-"`
 
 	// Tags allow you to assign custom metadata to resources:
 	// +kubebuilder:validation:Optional
@@ -193,7 +211,6 @@ type LoadBalancerHealthMonitorStatus struct {
 type LoadBalancerHealthMonitor struct {
 	metav1.TypeMeta   `json:",inline"`
 	metav1.ObjectMeta `json:"metadata,omitempty"`
-	// +kubebuilder:validation:XValidation:rule="!('*' in self.managementPolicies || 'Create' in self.managementPolicies || 'Update' in self.managementPolicies) || has(self.forProvider.poolUuid) || (has(self.initProvider) && has(self.initProvider.poolUuid))",message="spec.forProvider.poolUuid is a required parameter"
 	// +kubebuilder:validation:XValidation:rule="!('*' in self.managementPolicies || 'Create' in self.managementPolicies || 'Update' in self.managementPolicies) || has(self.forProvider.type) || (has(self.initProvider) && has(self.initProvider.type))",message="spec.forProvider.type is a required parameter"
 	Spec   LoadBalancerHealthMonitorSpec   `json:"spec"`
 	Status LoadBalancerHealthMonitorStatus `json:"status,omitempty"`

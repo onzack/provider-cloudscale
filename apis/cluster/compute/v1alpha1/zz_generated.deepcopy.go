@@ -992,6 +992,16 @@ func (in *ServerInitParameters) DeepCopyInto(out *ServerInitParameters) {
 		*out = new(string)
 		**out = **in
 	}
+	if in.ImageUUIDRef != nil {
+		in, out := &in.ImageUUIDRef, &out.ImageUUIDRef
+		*out = new(v1.Reference)
+		(*in).DeepCopyInto(*out)
+	}
+	if in.ImageUUIDSelector != nil {
+		in, out := &in.ImageUUIDSelector, &out.ImageUUIDSelector
+		*out = new(v1.Selector)
+		(*in).DeepCopyInto(*out)
+	}
 	if in.Interfaces != nil {
 		in, out := &in.Interfaces, &out.Interfaces
 		*out = make([]InterfacesInitParameters, len(*in))
@@ -1349,6 +1359,16 @@ func (in *ServerParameters) DeepCopyInto(out *ServerParameters) {
 		in, out := &in.ImageUUID, &out.ImageUUID
 		*out = new(string)
 		**out = **in
+	}
+	if in.ImageUUIDRef != nil {
+		in, out := &in.ImageUUIDRef, &out.ImageUUIDRef
+		*out = new(v1.Reference)
+		(*in).DeepCopyInto(*out)
+	}
+	if in.ImageUUIDSelector != nil {
+		in, out := &in.ImageUUIDSelector, &out.ImageUUIDSelector
+		*out = new(v1.Selector)
+		(*in).DeepCopyInto(*out)
 	}
 	if in.Interfaces != nil {
 		in, out := &in.Interfaces, &out.Interfaces

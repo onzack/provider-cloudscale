@@ -22,7 +22,16 @@ type LoadBalancerListenerInitParameters struct {
 	Name *string `json:"name,omitempty" tf:"name,omitempty"`
 
 	// The pool of the listener.
+	// +crossplane:generate:reference:type=github.com/onzack/provider-cloudscale/apis/cluster/networking/v1alpha1.LoadBalancerPool
 	PoolUUID *string `json:"poolUuid,omitempty" tf:"pool_uuid,omitempty"`
+
+	// Reference to a LoadBalancerPool in networking to populate poolUuid.
+	// +kubebuilder:validation:Optional
+	PoolUUIDRef *v1.Reference `json:"poolUuidRef,omitempty" tf:"-"`
+
+	// Selector for a LoadBalancerPool in networking to populate poolUuid.
+	// +kubebuilder:validation:Optional
+	PoolUUIDSelector *v1.Selector `json:"poolUuidSelector,omitempty" tf:"-"`
 
 	// The protocol used for receiving traffic. Options include "tcp".
 	Protocol *string `json:"protocol,omitempty" tf:"protocol,omitempty"`
@@ -108,8 +117,17 @@ type LoadBalancerListenerParameters struct {
 	Name *string `json:"name,omitempty" tf:"name,omitempty"`
 
 	// The pool of the listener.
+	// +crossplane:generate:reference:type=github.com/onzack/provider-cloudscale/apis/cluster/networking/v1alpha1.LoadBalancerPool
 	// +kubebuilder:validation:Optional
 	PoolUUID *string `json:"poolUuid,omitempty" tf:"pool_uuid,omitempty"`
+
+	// Reference to a LoadBalancerPool in networking to populate poolUuid.
+	// +kubebuilder:validation:Optional
+	PoolUUIDRef *v1.Reference `json:"poolUuidRef,omitempty" tf:"-"`
+
+	// Selector for a LoadBalancerPool in networking to populate poolUuid.
+	// +kubebuilder:validation:Optional
+	PoolUUIDSelector *v1.Selector `json:"poolUuidSelector,omitempty" tf:"-"`
 
 	// The protocol used for receiving traffic. Options include "tcp".
 	// +kubebuilder:validation:Optional

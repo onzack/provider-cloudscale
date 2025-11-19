@@ -7,6 +7,8 @@ organization](https://github.com/crossplane-contrib/) will list their repository
 
 ## Maintainers
 
-* Full Name <email@example.com> ([githubusername](https://github.com/githubusername))
+* Michael Lechner  ([labs7](https://github.com/labs7))
+* Lucas Catrina ([lucatr](https://github.com/lucatr))
+* Robin Hermann ([R-Studio](https://github.com/R-Studio))
 
 See [CODEOWNERS](./CODEOWNERS) for automatic PR assignment.

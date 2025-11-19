@@ -17,5 +17,13 @@ func Configure(p *config.Provider) {
 		r.References["load_balancer"] = config.Reference{
 			Type: "github.com/onzack/provider-cloudscale/apis/namespaced/networking/v1alpha1.LoadBalancer",
 		}
+
+		// This resource need the pool in which health monitor would be created
+		// as an input. And by defining it as a reference to github.com/onzack/provider-cloudscale/apis/namespaced/networking/v1alpha1.LoadBalancerPool
+		// object, we can build cross resource referencing. See
+		// poolUuidRef in the example in the Testing section below.
+		r.References["pool_uuid"] = config.Reference{
+			Type: "github.com/onzack/provider-cloudscale/apis/namespaced/networking/v1alpha1.LoadBalancerPool",
+		}
 	})
 }

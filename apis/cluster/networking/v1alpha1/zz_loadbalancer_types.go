@@ -108,7 +108,16 @@ type VipAddressesInitParameters struct {
 	Address *string `json:"address,omitempty" tf:"address,omitempty"`
 
 	// The UUID of the subnet this VIP address should be part of.
+	// +crossplane:generate:reference:type=github.com/onzack/provider-cloudscale/apis/cluster/networking/v1alpha1.Subnet
 	SubnetUUID *string `json:"subnetUuid,omitempty" tf:"subnet_uuid,omitempty"`
+
+	// Reference to a Subnet in networking to populate subnetUuid.
+	// +kubebuilder:validation:Optional
+	SubnetUUIDRef *v1.Reference `json:"subnetUuidRef,omitempty" tf:"-"`
+
+	// Selector for a Subnet in networking to populate subnetUuid.
+	// +kubebuilder:validation:Optional
+	SubnetUUIDSelector *v1.Selector `json:"subnetUuidSelector,omitempty" tf:"-"`
 }
 
 type VipAddressesObservation struct {
@@ -136,8 +145,17 @@ type VipAddressesParameters struct {
 	Address *string `json:"address,omitempty" tf:"address,omitempty"`
 
 	// The UUID of the subnet this VIP address should be part of.
+	// +crossplane:generate:reference:type=github.com/onzack/provider-cloudscale/apis/cluster/networking/v1alpha1.Subnet
 	// +kubebuilder:validation:Optional
 	SubnetUUID *string `json:"subnetUuid,omitempty" tf:"subnet_uuid,omitempty"`
+
+	// Reference to a Subnet in networking to populate subnetUuid.
+	// +kubebuilder:validation:Optional
+	SubnetUUIDRef *v1.Reference `json:"subnetUuidRef,omitempty" tf:"-"`
+
+	// Selector for a Subnet in networking to populate subnetUuid.
+	// +kubebuilder:validation:Optional
+	SubnetUUIDSelector *v1.Selector `json:"subnetUuidSelector,omitempty" tf:"-"`
 }
 
 // LoadBalancerSpec defines the desired state of LoadBalancer

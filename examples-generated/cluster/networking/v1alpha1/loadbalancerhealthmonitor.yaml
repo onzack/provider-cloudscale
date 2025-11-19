@@ -11,5 +11,7 @@ spec:
     httpHost: www.cloudscale.ch
     httpUrlPath: /
     httpVersion: "1.1"
-    poolUuid: ${cloudscale_load_balancer_pool.lb1-pool.id}
+    poolUuidSelector:
+      matchLabels:
+        testing.upbound.io/example-name: lb1-pool
     type: http

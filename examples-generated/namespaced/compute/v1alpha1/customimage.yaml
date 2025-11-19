@@ -33,7 +33,9 @@ metadata:
 spec:
   forProvider:
     flavorSlug: flex-8-4
-    imageUuid: ${cloudscale_custom_image.your_image.id}
+    imageUuidSelector:
+      matchLabels:
+        testing.upbound.io/example-name: your_image
     name: your-server
     sshKeys:
     - ssh-ed25519 AAAAC3NzaC1lZDI1NTE5AAAAIL2jzgla23DfRVLQr3KT20QQYovqCCN3clHrjm2ZuQFW

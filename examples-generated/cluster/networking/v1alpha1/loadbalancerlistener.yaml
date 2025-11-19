@@ -9,7 +9,9 @@ metadata:
 spec:
   forProvider:
     name: web-lb1-listener
-    poolUuid: ${cloudscale_load_balancer_pool.lb1-pool.id}
+    poolUuidSelector:
+      matchLabels:
+        testing.upbound.io/example-name: lb1-pool
     protocol: tcp
     protocolPort: 80
 
