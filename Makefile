@@ -36,6 +36,12 @@ PLATFORMS ?= linux_amd64 linux_arm64
 -include build/makelib/output.mk
 
 # ====================================================================================
+# Custom generate.done target to fix example YAMLs
+
+generate.done: 
+	@./hack/fix-examples.sh
+
+# ====================================================================================
 # Setup Go
 
 # Set a sane default so that the nprocs calculation below is less noisy on the initial

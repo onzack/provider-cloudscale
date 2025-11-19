@@ -1,0 +1,42 @@
+apiVersion: cloudscale.m.crossplane.io/v1alpha1
+kind: CustomImage
+metadata:
+  annotations:
+    meta.upbound.io/example-id: cloudscale/v1alpha1/customimage
+  labels:
+    testing.upbound.io/example-name: your_image
+  name: your-image
+  namespace: crossplane-system
+spec:
+  forProvider:
+    firmwareType: bios
+    importUrl: https://mirror.example.com/your-distro-12.12-openstack-amd64.raw
+    name: Your Distro 12.12
+    slug: your-distro-12.12
+    userDataHandling: extend-cloud-config
+    zoneSlugs:
+    - rma1
+
+---
+
+apiVersion: cloudscale.m.crossplane.io/v1alpha1
+kind: Server
+metadata:
+  annotations:
+    meta.upbound.io/example-id: cloudscale/v1alpha1/customimage
+  labels:
+    testing.upbound.io/example-name: your_server
+  name: your-server
+  namespace: crossplane-system
+spec:
+  forProvider:
+    flavorSlug: flex-8-4
+    imageUuidSelector:
+      matchLabels:
+        testing.upbound.io/example-name: your_image
+    name: your-server
+    sshKeys:
+    - ssh-ed25519 AAAAC3NzaC1lZDI1NTE5AAAAIL2jzgla23DfRVLQr3KT20QQYovqCCN3clHrjm2ZuQFW
+      user@example.com
+    volumeSizeGb: 16
+    zoneSlug: rma1

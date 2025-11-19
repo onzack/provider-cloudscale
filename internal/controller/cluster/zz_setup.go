@@ -9,20 +9,20 @@ import (
 
 	"github.com/crossplane/upjet/v2/pkg/controller"
 
-	customimage "github.com/onzack/provider-cloudscale/internal/controller/cluster/compute/customimage"
-	server "github.com/onzack/provider-cloudscale/internal/controller/cluster/compute/server"
-	servergroup "github.com/onzack/provider-cloudscale/internal/controller/cluster/compute/servergroup"
-	floatingip "github.com/onzack/provider-cloudscale/internal/controller/cluster/networking/floatingip"
-	loadbalancer "github.com/onzack/provider-cloudscale/internal/controller/cluster/networking/loadbalancer"
-	loadbalancerhealthmonitor "github.com/onzack/provider-cloudscale/internal/controller/cluster/networking/loadbalancerhealthmonitor"
-	loadbalancerlistener "github.com/onzack/provider-cloudscale/internal/controller/cluster/networking/loadbalancerlistener"
-	loadbalancerpool "github.com/onzack/provider-cloudscale/internal/controller/cluster/networking/loadbalancerpool"
-	loadbalancerpoolmember "github.com/onzack/provider-cloudscale/internal/controller/cluster/networking/loadbalancerpoolmember"
-	network "github.com/onzack/provider-cloudscale/internal/controller/cluster/networking/network"
-	subnet "github.com/onzack/provider-cloudscale/internal/controller/cluster/networking/subnet"
-	objectsuser "github.com/onzack/provider-cloudscale/internal/controller/cluster/objects/objectsuser"
+	customimage "github.com/onzack/provider-cloudscale/internal/controller/cluster/cloudscale/customimage"
+	floatingip "github.com/onzack/provider-cloudscale/internal/controller/cluster/cloudscale/floatingip"
+	loadbalancer "github.com/onzack/provider-cloudscale/internal/controller/cluster/cloudscale/loadbalancer"
+	loadbalancerhealthmonitor "github.com/onzack/provider-cloudscale/internal/controller/cluster/cloudscale/loadbalancerhealthmonitor"
+	loadbalancerlistener "github.com/onzack/provider-cloudscale/internal/controller/cluster/cloudscale/loadbalancerlistener"
+	loadbalancerpool "github.com/onzack/provider-cloudscale/internal/controller/cluster/cloudscale/loadbalancerpool"
+	loadbalancerpoolmember "github.com/onzack/provider-cloudscale/internal/controller/cluster/cloudscale/loadbalancerpoolmember"
+	network "github.com/onzack/provider-cloudscale/internal/controller/cluster/cloudscale/network"
+	objectsuser "github.com/onzack/provider-cloudscale/internal/controller/cluster/cloudscale/objectsuser"
+	server "github.com/onzack/provider-cloudscale/internal/controller/cluster/cloudscale/server"
+	servergroup "github.com/onzack/provider-cloudscale/internal/controller/cluster/cloudscale/servergroup"
+	subnet "github.com/onzack/provider-cloudscale/internal/controller/cluster/cloudscale/subnet"
+	volume "github.com/onzack/provider-cloudscale/internal/controller/cluster/cloudscale/volume"
 	providerconfig "github.com/onzack/provider-cloudscale/internal/controller/cluster/providerconfig"
-	volume "github.com/onzack/provider-cloudscale/internal/controller/cluster/storage/volume"
 )
 
 // Setup creates all controllers with the supplied logger and adds them to
@@ -30,8 +30,6 @@ import (
 func Setup(mgr ctrl.Manager, o controller.Options) error {
 	for _, setup := range []func(ctrl.Manager, controller.Options) error{
 		customimage.Setup,
-		server.Setup,
-		servergroup.Setup,
 		floatingip.Setup,
 		loadbalancer.Setup,
 		loadbalancerhealthmonitor.Setup,
@@ -39,10 +37,12 @@ func Setup(mgr ctrl.Manager, o controller.Options) error {
 		loadbalancerpool.Setup,
 		loadbalancerpoolmember.Setup,
 		network.Setup,
-		subnet.Setup,
 		objectsuser.Setup,
-		providerconfig.Setup,
+		server.Setup,
+		servergroup.Setup,
+		subnet.Setup,
 		volume.Setup,
+		providerconfig.Setup,
 	} {
 		if err := setup(mgr, o); err != nil {
 			return err
@@ -56,8 +56,6 @@ func Setup(mgr ctrl.Manager, o controller.Options) error {
 func SetupGated(mgr ctrl.Manager, o controller.Options) error {
 	for _, setup := range []func(ctrl.Manager, controller.Options) error{
 		customimage.SetupGated,
-		server.SetupGated,
-		servergroup.SetupGated,
 		floatingip.SetupGated,
 		loadbalancer.SetupGated,
 		loadbalancerhealthmonitor.SetupGated,
@@ -65,10 +63,12 @@ func SetupGated(mgr ctrl.Manager, o controller.Options) error {
 		loadbalancerpool.SetupGated,
 		loadbalancerpoolmember.SetupGated,
 		network.SetupGated,
-		subnet.SetupGated,
 		objectsuser.SetupGated,
-		providerconfig.SetupGated,
+		server.SetupGated,
+		servergroup.SetupGated,
+		subnet.SetupGated,
 		volume.SetupGated,
+		providerconfig.SetupGated,
 	} {
 		if err := setup(mgr, o); err != nil {
 			return err

@@ -10,10 +10,7 @@ package cluster
 import (
 	"k8s.io/apimachinery/pkg/runtime"
 
-	v1alpha1 "github.com/onzack/provider-cloudscale/apis/cluster/compute/v1alpha1"
-	v1alpha1networking "github.com/onzack/provider-cloudscale/apis/cluster/networking/v1alpha1"
-	v1alpha1objects "github.com/onzack/provider-cloudscale/apis/cluster/objects/v1alpha1"
-	v1alpha1storage "github.com/onzack/provider-cloudscale/apis/cluster/storage/v1alpha1"
+	v1alpha1 "github.com/onzack/provider-cloudscale/apis/cluster/cloudscale/v1alpha1"
 	v1alpha1cluster "github.com/onzack/provider-cloudscale/apis/cluster/v1alpha1"
 	v1beta1 "github.com/onzack/provider-cloudscale/apis/cluster/v1beta1"
 )
@@ -22,9 +19,6 @@ func init() {
 	// Register the types with the Scheme so the components can map objects to GroupVersionKinds and back
 	AddToSchemes = append(AddToSchemes,
 		v1alpha1.SchemeBuilder.AddToScheme,
-		v1alpha1networking.SchemeBuilder.AddToScheme,
-		v1alpha1objects.SchemeBuilder.AddToScheme,
-		v1alpha1storage.SchemeBuilder.AddToScheme,
 		v1alpha1cluster.SchemeBuilder.AddToScheme,
 		v1beta1.SchemeBuilder.AddToScheme,
 	)

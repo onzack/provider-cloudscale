@@ -1,0 +1,14 @@
+apiVersion: cloudscale.m.crossplane.io/v1alpha1
+kind: LoadBalancer
+metadata:
+  annotations:
+    meta.upbound.io/example-id: cloudscale/v1alpha1/loadbalancer
+  labels:
+    testing.upbound.io/example-name: lb1
+  name: lb1
+  namespace: crossplane-system
+spec:
+  forProvider:
+    flavorSlug: lb-standard
+    name: web-lb1
+    zoneSlug: lpg1

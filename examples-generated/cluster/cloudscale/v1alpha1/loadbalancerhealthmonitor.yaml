@@ -1,0 +1,17 @@
+apiVersion: cloudscale.crossplane.io/v1alpha1
+kind: LoadBalancerHealthMonitor
+metadata:
+  annotations:
+    meta.upbound.io/example-id: cloudscale/v1alpha1/loadbalancerhealthmonitor
+  labels:
+    testing.upbound.io/example-name: lb1-health-monitor
+  name: lb1-health-monitor
+spec:
+  forProvider:
+    httpHost: www.cloudscale.ch
+    httpUrlPath: /
+    httpVersion: "1.1"
+    poolUuidSelector:
+      matchLabels:
+        testing.upbound.io/example-name: lb1-pool
+    type: http
