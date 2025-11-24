@@ -80,10 +80,70 @@ IMAGES = $(PROJECT_NAME)
 # ====================================================================================
 # Setup XPKG
 
-XPKG_REG_ORGS ?= ghcr.io/onzack
-XPKG_REG_ORGS_NO_PROMOTE ?= ghcr.io/onzack
+XPKG_REG_ORGS ?= xpkg.upbound.io/onzack
+XPKG_REG_ORGS_NO_PROMOTE ?= xpkg.upbound.io/onzack
 XPKGS = $(PROJECT_NAME)
+
+# Upbound authentication configuration
+# For robot accounts, set either:
+# - UP_ROBOT_USER and UP_ROBOT_PASSWORD for username/password auth
+# - UP_ROBOT_TOKEN for token-based auth
+UP_ROBOT_USER ?=
+UP_ROBOT_PASSWORD ?=
+UP_ROBOT_TOKEN ?=
+
+# Map GitHub Actions secrets to UP credentials for compatibility
+ifdef UPBOUND_MARKETPLACE_PUSH_ROBOT_USER
+export UP_ROBOT_USER = $(UPBOUND_MARKETPLACE_PUSH_ROBOT_USER)
+endif
+ifdef UPBOUND_MARKETPLACE_PUSH_ROBOT_PWD
+export UP_ROBOT_PASSWORD = $(UPBOUND_MARKETPLACE_PUSH_ROBOT_PWD)
+endif
+ifdef UPBOUND_MARKETPLACE_PUSH_ROBOT_TOKEN
+export UP_ROBOT_TOKEN = $(UPBOUND_MARKETPLACE_PUSH_ROBOT_TOKEN)
+endif
+
 -include build/makelib/xpkg.mk
+
+# ====================================================================================
+# Upbound Publishing Overrides
+# Override xpkg publishing to use 'up' CLI for Upbound registries (macOS compatibility)
+
+# Upbound login target
+.PHONY: up.login
+up.login:
+	@if [ -n "$(UP_ROBOT_TOKEN)" ]; then \
+		$(INFO) Logging in to Upbound with robot token; \
+		echo "$(UP_ROBOT_TOKEN)" | up login --token - || $(FAIL); \
+		$(OK) Logged in to Upbound with robot token; \
+	elif [ -n "$(UP_ROBOT_USER)" ] && [ -n "$(UP_ROBOT_PASSWORD)" ]; then \
+		$(INFO) Logging in to Upbound as robot user $(UP_ROBOT_USER); \
+		echo "$(UP_ROBOT_PASSWORD)" | up login --username "$(UP_ROBOT_USER)" --password - || $(FAIL); \
+		$(OK) Logged in to Upbound as robot user $(UP_ROBOT_USER); \
+	elif ! up profile current > /dev/null 2>&1; then \
+		$(ERR) Not logged in to Upbound. Please run 'up login' or set UP_ROBOT_TOKEN or UP_ROBOT_USER/UP_ROBOT_PASSWORD environment variables; \
+		exit 1; \
+	else \
+		$(INFO) Already logged in to Upbound; \
+	fi
+
+# Override xpkg publish for Upbound registries to use 'up' CLI
+define UP_XPKG_PUBLISH
+xpkg.release.publish.$(1).$(2): up.login
+	@$$(INFO) Pushing package $(1)/$(2):$$(VERSION)
+	@for platform in $$(XPKG_LINUX_PLATFORMS); do \
+		up xpkg push -f $$(XPKG_OUTPUT_DIR)/$$$$platform/$(2)-$$(VERSION).xpkg $(1)/$(2):$$(VERSION) 2>&1 | tee /tmp/up-push.log; \
+		if grep -q "repository does not exist" /tmp/up-push.log; then \
+			up xpkg push --create -f $$(XPKG_OUTPUT_DIR)/$$$$platform/$(2)-$$(VERSION).xpkg $(1)/$(2):$$(VERSION) || $$(FAIL); \
+		elif ! grep -q "xpkg pushed" /tmp/up-push.log; then \
+			$$(FAIL); \
+		fi; \
+	done
+	@$$(OK) Pushed package $(1)/$(2):$$(VERSION)
+endef
+
+# Apply the override for Upbound registries
+$(foreach r,$(filter xpkg.upbound.io%,$(XPKG_REG_ORGS)), $(foreach x,$(XPKGS),$(eval $(call UP_XPKG_PUBLISH,$(r),$(x)))))
 
 # ====================================================================================
 # Fallthrough

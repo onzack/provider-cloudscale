@@ -9,11 +9,4 @@ metadata:
     meta.crossplane.io/description: |
       Crossplane provider for cloudscale.ch infrastructure
     meta.crossplane.io/readme: |
-      This provider enables provisioning of cloudscale.ch resources via Crossplane.
-      
-      Resources include: servers, volumes, networks, subnets, load balancers, floating IPs, and more.
-spec:
-  controller:
-    image: ghcr.io/onzack/provider-cloudscale
-  crossplane:
-    version: ">=v2.0.0"
+      This provider enables provisioning of cloudscale.ch resources via Crossplane. https://www.cloudscale.ch/en/api/v1 
