@@ -89,5 +89,7 @@ jobs:
         run: |
           up version
           up login --token ${{ secrets.UPBOUND_PAT }}
-          up xpkg push -f _output/xpkg/linux_amd64/provider-cloudscale-${{ env.VERSION }}.xpkg xpkg.upbound.io/onzack-ag/provider-cloudscale:${{ env.VERSION }}
-          up xpkg push -f _output/xpkg/linux_arm64/provider-cloudscale-${{ env.VERSION }}.xpkg xpkg.upbound.io/onzack-ag/provider-cloudscale:${{ env.VERSION }}
+          up xpkg push \
+            -f _output/xpkg/linux_amd64/provider-cloudscale-${{ env.VERSION }}.xpkg \
+            -f _output/xpkg/linux_arm64/provider-cloudscale-${{ env.VERSION }}.xpkg \
+            xpkg.upbound.io/onzack-ag/provider-cloudscale:${{ env.VERSION }}

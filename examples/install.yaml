@@ -3,4 +3,4 @@ kind: Provider
 metadata:
   name: provider-cloudscale
 spec:
-  package: xpkg.crossplane.io/onzack/provider-cloudscale:v0.1.0
+  package: xpkg.upbound.io/onzack-ag/provider-cloudscale:v0.1.0
