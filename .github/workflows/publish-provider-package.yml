@@ -87,9 +87,8 @@ jobs:
 
       - name: Publish Artifacts
         env:
-          UPBOUND_ROBOT_ACCOUNT_ID: ${{ secrets.UPBOUND_ROBOT_ACCOUNT_ID }}
           UPBOUND_ROBOT_ACCOUNT_TOKEN: ${{ secrets.UPBOUND_ROBOT_ACCOUNT_TOKEN }}
         run: |
-          up login --token ${{ secrets.UPBOUND_ROBOT_ACCOUNT_TOKEN }} --account-id ${{ secrets.UPBOUND_ROBOT_ACCOUNT_ID }}
+          up login --organization=onzack-ag --token ${{ secrets.UPBOUND_ROBOT_ACCOUNT_TOKEN }}
           up xpkg push -f _output/xpkg/linux_amd64/provider-cloudscale-${{ env.VERSION }}.xpkg xpkg.upbound.io/onzack-ag/provider-cloudscale:${{ env.VERSION }}
           up xpkg push -f _output/xpkg/linux_arm64/provider-cloudscale-${{ env.VERSION }}.xpkg xpkg.upbound.io/onzack-ag/provider-cloudscale:${{ env.VERSION }}
