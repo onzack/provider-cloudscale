@@ -1,4 +1,4 @@
-apiVersion: networking.cloudscale.crossplane.io/v1alpha1
+apiVersion: cloudscale.crossplane.io/v1alpha1
 kind: Network
 metadata:
   name: test-net

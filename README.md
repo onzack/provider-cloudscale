@@ -21,7 +21,7 @@ kind: Provider
 metadata:
   name: provider-cloudscale
 spec:
-  package: ghcr.io/onzack/provider-cloudscale:v0.1.10
+  package: xpkg.upboud.io/onzack-ag/provider-cloudscale:v0.1.1
 ```
 
 ### 2. Create a Secret with your cloudscale.ch API Token
