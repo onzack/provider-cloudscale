@@ -40,9 +40,9 @@ jobs:
 
       - name: Install Upbound CLI
         run: |
-          curl -sL "https://cli.upbound.io" | sh
+          curl -sL "https://cli.upbound.io" | VERSION=current sh
           sudo mv up /usr/local/bin/
-          up --version
+          up version
 
       - name: Checkout
         uses: actions/checkout@692973e3d937129bcbf40652eb9f2f61becf3332 # v4
@@ -89,6 +89,7 @@ jobs:
         env:
           UPBOUND_ROBOT_ACCOUNT_TOKEN: ${{ secrets.UPBOUND_ROBOT_ACCOUNT_TOKEN }}
         run: |
+          up version
           up login --organization=onzack-ag --token ${{ secrets.UPBOUND_ROBOT_ACCOUNT_TOKEN }}
           up xpkg push -f _output/xpkg/linux_amd64/provider-cloudscale-${{ env.VERSION }}.xpkg xpkg.upbound.io/onzack-ag/provider-cloudscale:${{ env.VERSION }}
           up xpkg push -f _output/xpkg/linux_arm64/provider-cloudscale-${{ env.VERSION }}.xpkg xpkg.upbound.io/onzack-ag/provider-cloudscale:${{ env.VERSION }}
