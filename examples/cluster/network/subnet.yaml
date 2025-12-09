@@ -1,14 +1,14 @@
 apiVersion: networking.cloudscale.crossplane.io/v1alpha1
 kind: Subnet
 metadata:
-  name: subnet-test-michi
+  name: subnet-test
 spec:
   forProvider:
     cidr: 10.0.0.0/24
     gatewayAddress: 10.0.0.1
     # Option 1: Reference a Network resource by name
     networkUuidRef:
-      name: test-net-michi
+      name: test-net
     # Option 2: Use a selector to find the Network dynamically (comment out networkUuidRef if using this)
     # networkUuidSelector:
     #   matchLabels:

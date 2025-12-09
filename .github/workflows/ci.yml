@@ -239,7 +239,7 @@ jobs:
       - name: Deploying locally built provider package
         run: make local-deploy
 
-  publish-artifacts:
+  build-artifacts:
     runs-on: ubuntu-24.04
     needs:
       - detect-noop
@@ -262,13 +262,11 @@ jobs:
           version: ${{ env.DOCKER_BUILDX_VERSION }}
           install: true
 
-      - name: Login to Upbound
-        uses: docker/login-action@5e57cd118135c172c3672efd75eb46360885c0ef # v3
-        if: env.UPBOUND_MARKETPLACE_PUSH_ROBOT_USR != ''
-        with:
-          registry: xpkg.upbound.io
-          username: ${{ secrets.UPBOUND_MARKETPLACE_PUSH_ROBOT_USER }}
-          password: ${{ secrets.UPBOUND_MARKETPLACE_PUSH_ROBOT_PWD }}
+  #     - name: Install Upbound CLI
+  #       run: |
+  #         curl -sL "https://cli.upbound.io" | sh
+  #         sudo mv up /usr/local/bin/
+  #         up --version
 
       - name: Checkout
         uses: actions/checkout@692973e3d937129bcbf40652eb9f2f61becf3332 # v4
@@ -311,12 +309,21 @@ jobs:
           # builds by default. Specifying --load does so.
           BUILD_ARGS: "--load"
 
-      - name: Upload Artifacts to GitHub
-        uses: actions/upload-artifact@50769540e7f4bd5e21e526ee35c689e35e0d6874 # v4
-        with:
-          name: output
-          path: _output/**
+  #     - name: Upload Artifacts to GitHub
+  #       uses: actions/upload-artifact@50769540e7f4bd5e21e526ee35c689e35e0d6874 # v4
+  #       with:
+  #         name: output
+  #         path: _output/**
 
-      - name: Publish Artifacts
-        if: env.UPBOUND_MARKETPLACE_PUSH_ROBOT_USER != ''
-        run: make publish BRANCH_NAME=${GITHUB_REF##*/}
+  #     - name: Publish Artifacts
+  #       env:
+  #         UPBOUND_MARKETPLACE_PUSH_ROBOT_USER: ${{ secrets.UPBOUND_MARKETPLACE_PUSH_ROBOT_USER }}
+  #         UPBOUND_MARKETPLACE_PUSH_ROBOT_PWD: ${{ secrets.UPBOUND_MARKETPLACE_PUSH_ROBOT_PWD }}
+  #         UPBOUND_MARKETPLACE_PUSH_ROBOT_TOKEN: ${{ secrets.UPBOUND_MARKETPLACE_PUSH_ROBOT_TOKEN }}
+  #       run: |
+  #         # Only publish if credentials are available
+  #         if [ -n "$UPBOUND_MARKETPLACE_PUSH_ROBOT_USER" ] || [ -n "$UPBOUND_MARKETPLACE_PUSH_ROBOT_TOKEN" ]; then
+  #           make publish BRANCH_NAME=${GITHUB_REF##*/}
+  #         else
+  #           echo "Skipping publish - no Upbound credentials configured"
+  #         fi

@@ -1,10 +1,10 @@
 apiVersion: networking.cloudscale.crossplane.io/v1alpha1
 kind: Network
 metadata:
-  name: test-net-michi
+  name: test-net
 spec:
   forProvider:
     mtu: 8880
-    name: test-net-michi
+    name: test-net
     zoneSlug: rma1
     autoCreateIpv4Subnet: false
