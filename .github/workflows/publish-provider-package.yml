@@ -11,17 +11,85 @@ on:
         description: 'Go version to use if building needs to be done'
         default: '1.25'
         required: false
+      docker-buildx-version:
+        description: 'Docker Buildx version to use'
+        default: 'v0.28.0'
+        required: false
+
+env:
+  VERSION: ${{ github.event.inputs.version }}
+  GO_VERSION: ${{ github.event.inputs.go-version }}
+  DOCKER_BUILDX_VERSION: ${{ github.event.inputs.docker-buildx-version }}
 
 jobs:
   publish-provider-package:
-    uses: crossplane-contrib/provider-workflows/.github/workflows/publish-provider.yml@main
-    with:
-      repository: provider-cloudscale
-      registry_org: onzack
-      version: ${{ github.event.inputs.version }}
-      go-version: ${{ github.event.inputs.go-version }}
-      cleanup-disk: false
-    secrets:
-      GHCR_PAT: ${{ secrets.GITHUB_TOKEN }}
-      # XPKG_MIRROR_TOKEN: ${{ secrets.XPKG_MIRROR_TOKEN }}
-      # XPKG_MIRROR_ACCESS_ID: ${{ secrets.XPKG_MIRROR_ACCESS_ID }}
+    runs-on: ubuntu-24.04
+    environment: publish
+
+    steps:
+      - name: Setup QEMU
+        uses: docker/setup-qemu-action@49b3bc8e6bdd4a60e6116a5414239cba5943d3cf # v3
+        with:
+          platforms: all
+
+      - name: Setup Docker Buildx
+        uses: docker/setup-buildx-action@v3
+        with:
+          version: ${{ env.DOCKER_BUILDX_VERSION }}
+          install: true
+
+      - name: Install Upbound CLI
+        run: |
+          curl -sL "https://cli.upbound.io" | sh
+          sudo mv up /usr/local/bin/
+          up --version
+
+      - name: Checkout
+        uses: actions/checkout@692973e3d937129bcbf40652eb9f2f61becf3332 # v4
+        with:
+          submodules: true
+
+      - name: Fetch History
+        run: git fetch --prune --unshallow
+
+      - name: Setup Go
+        uses: actions/setup-go@0a12ed9d6a96ab950c8f026ed9f722fe0da7ef32 # v5
+        with:
+          go-version: ${{ env.GO_VERSION }}
+
+      - name: Find the Go Build Cache
+        id: go
+        run: echo "cache=$(make go.cachedir)" >> $GITHUB_OUTPUT
+
+      - name: Cache the Go Build Cache
+        uses: actions/cache@v4
+        with:
+          path: ${{ steps.go.outputs.cache }}
+          key: ${{ runner.os }}-build-publish-artifacts-${{ hashFiles('**/go.sum') }}
+          restore-keys: ${{ runner.os }}-build-publish-artifacts-
+
+      - name: Cache Go Dependencies
+        uses: actions/cache@v4
+        with:
+          path: .work/pkg
+          key: ${{ runner.os }}-pkg-${{ hashFiles('**/go.sum') }}
+          restore-keys: ${{ runner.os }}-pkg-
+
+      - name: Vendor Dependencies
+        run: make vendor vendor.check
+
+      - name: Build Artifacts
+        run: make -j2 build.all
+        env:
+          # We're using docker buildx, which doesn't actually load the images it
+          # builds by default. Specifying --load does so.
+          BUILD_ARGS: "--load"
+
+      - name: Publish Artifacts
+        env:
+          UPBOUND_ROBOT_ACCOUNT_ID: ${{ secrets.UPBOUND_ROBOT_ACCOUNT_ID }}
+          UPBOUND_ROBOT_ACCOUNT_TOKEN: ${{ secrets.UPBOUND_ROBOT_ACCOUNT_TOKEN }}
+        run: |
+          up login --token ${{ secrets.UPBOUND_ROBOT_ACCOUNT_TOKEN }} --account-id ${{ secrets.UPBOUND_ROBOT_ACCOUNT_ID }}
+          up xpkg push -f _output/xpkg/linux_amd64/provider-cloudscale-${{ env.VERSION }}.xpkg xpkg.upbound.io/onzack-ag/provider-cloudscale:${{ env.VERSION }}
+          up xpkg push -f _output/xpkg/linux_arm64/provider-cloudscale-${{ env.VERSION }}.xpkg xpkg.upbound.io/onzack-ag/provider-cloudscale:${{ env.VERSION }}
