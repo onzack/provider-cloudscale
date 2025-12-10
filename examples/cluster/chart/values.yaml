@@ -1,0 +1,36 @@
+server:
+  name: web-worker01
+  flavorSlug: flex-4-2
+  imageSlug: ubuntu-24.04
+  sshKeys:
+  - ssh-ed25519 AAAAC3NzaC1lZDI1NTE5AAAAIOf/JADcF3j0vZH1gXT+But9nNkVt5tN9LAaJe6Cn6sm
+  zoneSlug: lpg1
+  userData: |
+    #cloud-config
+    runcmd:
+    - apt-get update
+    - apt-get install -y nginx
+    - systemctl start nginx
+    - systemctl enable nginx
+
+network:
+  name: web-network
+  zoneSlug: lpg1
+
+subnet:
+  name: web-subnet
+  cidr: 10.11.12.0/24
+  zoneSlug: lpg1
+
+loadbalancer:
+  name: web-loadbalancer
+  flavorSlug: lb-standard
+  zoneSlug: lpg1
+  pool:
+    name: web-loadbalancer-pool
+    algorithm: round_robin
+    protocol: tcp
+  listener:
+    name: web-loadbalancer-listener
+    protocol: tcp
+    protocolPort: 80

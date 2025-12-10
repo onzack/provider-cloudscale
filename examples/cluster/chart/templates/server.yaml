@@ -1,0 +1,77 @@
+apiVersion: cloudscale.crossplane.io/v1alpha1
+kind: Server
+metadata:
+  labels:
+    cloudscale.crossplane.io/server: {{ .Values.server.name }}
+  name: {{ .Values.server.name }}
+spec:
+  forProvider:
+    flavorSlug: {{ .Values.server.flavorSlug }}
+    imageSlug: {{ .Values.server.imageSlug }}
+    interfaces:
+    - addresses:
+      - subnetUuidSelector:
+          matchLabels:
+            cloudscale.crossplane.io/subnet: {{ .Values.subnet.name }}
+      type: private
+    - type: public
+    name: {{ .Values.server.name }}
+    sshKeys: {{ .Values.server.sshKeys }}
+    zoneSlug: {{ .Values.server.zoneSlug }}
+    userData: |
+{{- .Values.server.userData | nindent 6 }}
+
+# apiVersion: cloudscale.crossplane.io/v1alpha1
+# kind: Server
+# metadata:
+#   labels:
+#     cloudscale.crossplane.io/server: nat-gateway
+#   name: nat-gateway
+# spec:
+#   forProvider:
+#     flavorSlug: flex-4-2
+#     imageSlug: ubuntu-24.04
+#     interfaces:
+#     - type: public
+#     - addresses:
+#       - subnetUuidSelector:
+#           matchLabels:
+#             cloudscale.crossplane.io/subnet: {{ .Values.subnet.name }}
+#       type: private
+#     name: nat-gateway
+#     sshKeys: {{ .Values.server.sshKeys }}
+#     zoneSlug: {{ .Values.server.zoneSlug }}
+#     userData: |
+#       #cloud-config
+#       write_files:
+#         - path: /etc/sysctl.d/99-ip-forward.conf
+#             content: |
+#             net.ipv4.ip_forward = 1
+#             owner: root:root
+#             mode: '0644'
+        
+#         - path: /etc/iptables/rules.v4
+#             content: |
+#             *nat
+#             :PREROUTING ACCEPT [0:0]
+#             :INPUT ACCEPT [0:0]
+#             :OUTPUT ACCEPT [0:0]
+#             :POSTROUTING ACCEPT [0:0]
+#             -A POSTROUTING -o ens3 -j MASQUERADE
+#             COMMIT
+            
+#             *filter
+#             :INPUT ACCEPT [0:0]
+#             :FORWARD ACCEPT [0:0]
+#             :OUTPUT ACCEPT [0:0]
+#             -A FORWARD -o ens3 -i ens4 -s {{ .Values.subnet.cidr }} -m conntrack --ctstate NEW -j ACCEPT
+#             -A FORWARD -m conntrack --ctstate ESTABLISHED,RELATED -j ACCEPT
+#             COMMIT
+#             owner: root:root
+#             mode: '0644'
+
+#         runcmd:
+#         - sysctl --system
+#         - iptables-restore < /etc/iptables/rules.v4
+#         - systemctl enable netfilter-persistent
+#         - systemctl start netfilter-persistent

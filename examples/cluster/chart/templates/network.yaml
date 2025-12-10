@@ -1,0 +1,28 @@
+
+
+apiVersion: cloudscale.crossplane.io/v1alpha1
+kind: Network
+metadata:
+  labels:
+    cloudscale.crossplane.io/network: {{ .Values.network.name }}
+  name: {{ .Values.network.name }}
+spec:
+  forProvider:
+    autoCreateIpv4Subnet: false
+    name: {{ .Values.network.name }}
+    zoneSlug: {{ .Values.network.zoneSlug }}
+
+---
+
+apiVersion: cloudscale.crossplane.io/v1alpha1
+kind: Subnet
+metadata:
+  labels:
+    cloudscale.crossplane.io/subnet: {{ .Values.subnet.name }}
+  name: {{ .Values.subnet.name }}
+spec:
+  forProvider:
+    cidr: {{ .Values.subnet.cidr }}
+    networkUuidSelector:
+      matchLabels:
+        cloudscale.crossplane.io/network: {{ .Values.network.name }}

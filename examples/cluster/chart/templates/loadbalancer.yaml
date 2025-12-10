@@ -1,0 +1,67 @@
+apiVersion: cloudscale.crossplane.io/v1alpha1
+kind: LoadBalancerPoolMember
+metadata:
+  labels:
+    cloudscale.crossplane.io/loadbalancer: {{ .Values.loadbalancer.name }}
+  name: {{ .Values.loadbalancer.name }}
+spec:
+  forProvider:
+    addressSelector:
+      matchLabels:
+        cloudscale.crossplane.io/server: {{ .Values.server.name }}
+    name: {{ .Values.loadbalancer.name }}-pool-member
+    poolUuidSelector:
+      matchLabels:
+        cloudscale.crossplane.io/loadbalancer-pool: {{ .Values.loadbalancer.pool.name }}
+    protocolPort: 80
+    subnetUuidSelector:
+      matchLabels:
+        cloudscale.crossplane.io/subnet: {{ .Values.subnet.name }}
+
+---
+
+apiVersion: cloudscale.crossplane.io/v1alpha1
+kind: LoadBalancer
+metadata:
+  labels:
+    cloudscale.crossplane.io/loadbalancer: {{ .Values.loadbalancer.name }}
+  name: {{ .Values.loadbalancer.name }}
+spec:
+  forProvider:
+    flavorSlug: {{ .Values.loadbalancer.flavorSlug }}
+    name: {{ .Values.loadbalancer.name }}
+    zoneSlug: {{ .Values.loadbalancer.zoneSlug }}
+
+---
+
+apiVersion: cloudscale.crossplane.io/v1alpha1
+kind: LoadBalancerPool
+metadata:
+  labels:
+    cloudscale.crossplane.io/loadbalancer-pool: {{ .Values.loadbalancer.pool.name }}
+  name: {{ .Values.loadbalancer.pool.name }}
+spec:
+  forProvider:
+    algorithm: {{ .Values.loadbalancer.pool.algorithm }}
+    loadBalancerUuidSelector:
+      matchLabels:
+        cloudscale.crossplane.io/loadbalancer: {{ .Values.loadbalancer.name }}
+    name: {{ .Values.loadbalancer.pool.name }}
+    protocol: {{ .Values.loadbalancer.pool.protocol }}
+
+---
+
+apiVersion: cloudscale.crossplane.io/v1alpha1
+kind: LoadBalancerListener
+metadata:
+  labels:
+    cloudscale.crossplane.io/loadbalancer-listener: {{ .Values.loadbalancer.listener.name }}
+  name: {{ .Values.loadbalancer.listener.name }}
+spec:
+  forProvider:
+    poolUuidSelector:
+      matchLabels:
+        cloudscale.crossplane.io/loadbalancer-pool: {{ .Values.loadbalancer.pool.name }}
+    protocol: {{ .Values.loadbalancer.listener.protocol }}
+    protocolPort: {{ .Values.loadbalancer.listener.protocolPort }}
+    name: {{ .Values.loadbalancer.listener.name }}
